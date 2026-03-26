@@ -93,7 +93,7 @@ async function main() {
     const date = new Date(bucket.start_time * 1000).toISOString().split('T')[0];
     const results = bucket.results || [];
     const currency = results[0]?.amount?.currency || 'usd';
-    const cost = results.reduce((sum, r) => sum + (r.amount?.value || 0), 0);
+    const cost = results.reduce((sum, r) => sum + (Number(r.amount?.value) || 0), 0);
     rows.push(`${date},${cost.toFixed(6)},${currency}`);
   }
 
