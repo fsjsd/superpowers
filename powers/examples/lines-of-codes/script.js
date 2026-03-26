@@ -4,43 +4,45 @@ const os = require('os');
 const path = require('path');
 
 const descriptor = {
-  name: "Lines of Code Counter",
-  description: "Counts lines of code per language in a folder using cloc and exports results as a CSV.",
-  category: "Code",
-  requirements: "Node v18+, cloc installed (brew install cloc / apt install cloc)",
+  name: 'Lines of Code Counter with very long title that will overflow',
+  description:
+    'Counts lines of code per language in a folder using cloc and exports results as a CSV.',
+  category: 'Code',
+  requirements: 'Node v18+, cloc installed (brew install cloc / apt install cloc)',
+  icon: 'file-code',
   input_schema: [
     {
-      name: "folder",
-      type: "folderpath",
-      label: "Folder",
-      description: "The folder to analyse",
+      name: 'folder',
+      type: 'folderpath',
+      label: 'Folder',
+      description: 'The folder to analyse',
       required: true,
-      default: ""
+      default: '',
     },
     {
-      name: "exclude-dir",
-      type: "text",
-      label: "Exclude directories",
-      description: "Comma-separated list of directory names to exclude (e.g. node_modules,.git)",
+      name: 'exclude-dir',
+      type: 'text',
+      label: 'Exclude directories',
+      description: 'Comma-separated list of directory names to exclude (e.g. node_modules,.git)',
       required: false,
-      default: "node_modules,.git,venv,.venv,env,dist,build,.next"
-    }
+      default: 'node_modules,.git,venv,.venv,env,dist,build,.next',
+    },
   ],
   events: [
     {
-      type: "progress",
+      type: 'progress',
       payload_schema: [
-        { name: "total",    label: "Total steps",     type: "number" },
-        { name: "finished", label: "Steps completed", type: "number" }
-      ]
-    }
+        { name: 'total', label: 'Total steps', type: 'number' },
+        { name: 'finished', label: 'Steps completed', type: 'number' },
+      ],
+    },
   ],
   output_schema: [
     {
-      type: "csv_file",
-      label: "Lines of code by language"
-    }
-  ]
+      type: 'csv_file',
+      label: 'Lines of code by language',
+    },
+  ],
 };
 
 const args = process.argv.slice(2);
@@ -85,12 +87,14 @@ const clocCheck = spawnSync('cloc', ['--version'], { encoding: 'utf8' });
 if (clocCheck.error) {
   process.stderr.write(
     'Error: cloc is not installed or not on PATH.\n' +
-    'Install it with: brew install cloc  (macOS) or  apt install cloc  (Linux)\n'
+      'Install it with: brew install cloc  (macOS) or  apt install cloc  (Linux)\n',
   );
   process.exit(1);
 }
 
-process.stdout.write(JSON.stringify({ event: 'progress', payload: { total: 1, finished: 0 } }) + '\n');
+process.stdout.write(
+  JSON.stringify({ event: 'progress', payload: { total: 1, finished: 0 } }) + '\n',
+);
 
 // Build cloc arguments
 const clocArgs = ['--json', folder];
@@ -143,13 +147,15 @@ for (const [language, stats] of ordered) {
     }
     return str;
   };
-  csvRows.push([
-    escapeCsv(language),
-    escapeCsv(stats.nFiles ?? ''),
-    escapeCsv(stats.blank ?? ''),
-    escapeCsv(stats.comment ?? ''),
-    escapeCsv(stats.code ?? '')
-  ].join(','));
+  csvRows.push(
+    [
+      escapeCsv(language),
+      escapeCsv(stats.nFiles ?? ''),
+      escapeCsv(stats.blank ?? ''),
+      escapeCsv(stats.comment ?? ''),
+      escapeCsv(stats.code ?? ''),
+    ].join(','),
+  );
 }
 
 const outputPath = path.join(os.tmpdir(), `lines-of-code-${Date.now()}.csv`);
@@ -160,6 +166,10 @@ try {
   process.exit(1);
 }
 
-process.stdout.write(JSON.stringify({ event: 'progress', payload: { total: 1, finished: 1 } }) + '\n');
-process.stdout.write(JSON.stringify({ event: 'output', payload: { path: outputPath, type: 'csv_file' } }) + '\n');
+process.stdout.write(
+  JSON.stringify({ event: 'progress', payload: { total: 1, finished: 1 } }) + '\n',
+);
+process.stdout.write(
+  JSON.stringify({ event: 'output', payload: { path: outputPath, type: 'csv_file' } }) + '\n',
+);
 process.exit(0);

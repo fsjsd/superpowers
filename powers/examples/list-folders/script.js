@@ -3,43 +3,45 @@ const path = require('path');
 const os = require('os');
 
 const descriptor = {
-  name: "List Files in Folder",
-  description: "Recursively lists all files in a given folder and exports the results as a CSV.",
-  category: "Files",
-  requirements: "Node v18+",
+  name: 'List Folders',
+  description:
+    'Recursively lists all subfolders in a given folder and exports the results as a CSV.',
+  category: 'Files',
+  requirements: 'Node v18+',
+  icon: 'folder-tree',
   input_schema: [
     {
-      name: "folder",
-      type: "folderpath",
-      label: "Folder",
-      description: "The folder to list files from",
+      name: 'folder',
+      type: 'folderpath',
+      label: 'Folder',
+      description: 'The folder to list subfolders from',
       required: true,
-      default: ""
+      default: '',
     },
     {
-      name: "recursive",
-      type: "boolean",
-      label: "Recursive",
-      description: "Whether to list files in subdirectories",
+      name: 'recursive',
+      type: 'boolean',
+      label: 'Recursive',
+      description: 'Whether to list folders in subdirectories',
       required: false,
-      default: "true"
-    }
+      default: 'true',
+    },
   ],
   events: [
     {
-      type: "progress",
+      type: 'progress',
       payload_schema: [
-        { name: "total",    label: "Total files",     type: "number" },
-        { name: "finished", label: "Files processed", type: "number" }
-      ]
-    }
+        { name: 'total', label: 'Total folders', type: 'number' },
+        { name: 'finished', label: 'Folders processed', type: 'number' },
+      ],
+    },
   ],
   output_schema: [
     {
-      type: "csv_file",
-      label: "File listing CSV"
-    }
-  ]
+      type: 'csv_file',
+      label: 'Folder listing CSV',
+    },
+  ],
 };
 
 const args = process.argv.slice(2);
@@ -82,75 +84,66 @@ if (!stat.isDirectory()) {
 
 const recursive = params['recursive'] !== 'false';
 
-// Collect all files
-function collectFiles(dir, recursive) {
+// Collect all subfolders
+function collectFolders(dir, recursive) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
-  const files = [];
+  const folders = [];
   for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
+      const fullPath = path.join(dir, entry.name);
+      folders.push(fullPath);
       if (recursive) {
-        files.push(...collectFiles(fullPath, recursive));
+        folders.push(...collectFolders(fullPath, recursive));
       }
-    } else {
-      files.push(fullPath);
     }
   }
-  return files;
+  return folders;
 }
 
-let allFiles;
+let allFolders;
 try {
-  allFiles = collectFiles(folder, recursive);
+  allFolders = collectFolders(folder, recursive);
 } catch (err) {
   process.stderr.write(`Error reading folder: ${err.message}\n`);
   process.exit(1);
 }
 
-const total = allFiles.length;
+const total = allFolders.length;
 
 // Build CSV rows
-const csvRows = ['name,extension,size_bytes,modified_at,relative_path,absolute_path'];
+const csvRows = ['name,modified_at,relative_path,absolute_path'];
 let finished = 0;
 
-for (const filePath of allFiles) {
-  let size = '';
+const escapeCsv = (val) => {
+  const str = String(val);
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+};
+
+for (const folderPath of allFolders) {
   let modifiedAt = '';
   try {
-    const s = fs.statSync(filePath);
-    size = s.size;
+    const s = fs.statSync(folderPath);
     modifiedAt = s.mtime.toISOString();
   } catch (_) {
     // skip stat errors
   }
 
-  const relative = path.relative(folder, filePath);
-  const ext = path.extname(filePath);
-  const name = path.basename(filePath);
+  const relative = path.relative(folder, folderPath);
+  const name = path.basename(folderPath);
 
-  const escapeCsv = (val) => {
-    const str = String(val);
-    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-      return '"' + str.replace(/"/g, '""') + '"';
-    }
-    return str;
-  };
-
-  csvRows.push([
-    escapeCsv(name),
-    escapeCsv(ext),
-    escapeCsv(size),
-    escapeCsv(modifiedAt),
-    escapeCsv(relative),
-    escapeCsv(filePath)
-  ].join(','));
+  csvRows.push(
+    [escapeCsv(name), escapeCsv(modifiedAt), escapeCsv(relative), escapeCsv(folderPath)].join(','),
+  );
 
   finished++;
   process.stdout.write(JSON.stringify({ event: 'progress', payload: { total, finished } }) + '\n');
 }
 
 // Write output CSV
-const outputPath = path.join(os.tmpdir(), `list-files-${Date.now()}.csv`);
+const outputPath = path.join(os.tmpdir(), `list-folders-${Date.now()}.csv`);
 try {
   fs.writeFileSync(outputPath, csvRows.join('\n'), 'utf8');
 } catch (err) {
@@ -158,5 +151,7 @@ try {
   process.exit(1);
 }
 
-process.stdout.write(JSON.stringify({ event: 'output', payload: { path: outputPath, type: 'csv_file' } }) + '\n');
+process.stdout.write(
+  JSON.stringify({ event: 'output', payload: { path: outputPath, type: 'csv_file' } }) + '\n',
+);
 process.exit(0);

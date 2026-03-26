@@ -1,0 +1,13 @@
+{
+  "name": "superpowers",
+  "private": true,
+  "scripts": {
+    "lint": "oxlint .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "lefthook": "^1.11.6",
+    "oxlint": "^0.16.4",
+    "prettier": "^3.5.3"
+  }
+}

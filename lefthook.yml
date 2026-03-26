@@ -1,0 +1,13 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: gitleaks
+      run: gitleaks protect --staged --redact
+
+    - name: oxlint
+      run: pnpm exec oxlint {staged_files}
+      glob: '*.{js,mjs,cjs}'
+
+    - name: prettier
+      run: pnpm exec prettier --write {staged_files} && git add {staged_files}
+      glob: '*.{js,mjs,cjs,json,md,yml,yaml}'
