@@ -4,7 +4,7 @@ const os = require('os');
 const path = require('path');
 
 const descriptor = {
-  name: 'Lines of Code Counter with very long title that will overflow',
+  name: 'Lines of Code',
   description:
     'Counts lines of code per language in a folder using cloc and exports results as a CSV.',
   category: 'Code',
