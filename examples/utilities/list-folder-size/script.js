@@ -5,7 +5,7 @@ const os = require('os');
 const descriptor = {
   name: 'List Folder Sizes',
   description: 'Shows the size of each top-level subfolder within a given directory.',
-  category: 'Files',
+  category: 'Utilities',
   requirements: 'Node v18+',
   icon: 'folder-open',
   input_schema: [

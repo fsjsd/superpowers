@@ -1,8 +1,5 @@
 'use strict';
 const https = require('https');
-const path = require('path');
-const os = require('os');
-const fs = require('fs');
 
 const descriptor = {
   name: 'OpenAI Daily Costs',
@@ -20,7 +17,7 @@ const descriptor = {
       default: 'OPENAI_ADMIN_API_KEY',
     },
   ],
-  output_schema: [{ type: 'csv_file', label: 'Daily Costs CSV' }],
+  output_schema: [{ type: 'chart', chartType: 'bar', label: 'Daily Costs (USD)' }],
 };
 
 const args = process.argv.slice(2);
@@ -88,20 +85,25 @@ async function main() {
   // Sort ascending by start_time
   buckets.sort((a, b) => a.start_time - b.start_time);
 
-  const rows = ['Date,Cost (USD),Currency'];
-  for (const bucket of buckets) {
+  const data = buckets.map((bucket) => {
     const date = new Date(bucket.start_time * 1000).toISOString().split('T')[0];
     const results = bucket.results || [];
-    const currency = results[0]?.amount?.currency || 'usd';
     const cost = results.reduce((sum, r) => sum + (Number(r.amount?.value) || 0), 0);
-    rows.push(`${date},${cost.toFixed(6)},${currency}`);
-  }
-
-  const outPath = path.join(os.tmpdir(), `openai-costs-${Date.now()}.csv`);
-  fs.writeFileSync(outPath, rows.join('\n') + '\n');
+    return { date, cost: parseFloat(cost.toFixed(6)) };
+  });
 
   process.stdout.write(
-    JSON.stringify({ event: 'output', payload: { path: outPath, type: 'csv_file' } }) + '\n',
+    JSON.stringify({
+      event: 'output',
+      payload: {
+        type: 'chart',
+        chartType: 'bar',
+        title: 'OpenAI Daily Costs (USD)',
+        nameKey: 'date',
+        dataKeys: ['cost'],
+        data,
+      },
+    }) + '\n',
   );
 }
 

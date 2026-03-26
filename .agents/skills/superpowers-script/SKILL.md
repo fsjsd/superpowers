@@ -49,7 +49,14 @@ ALWAYS clarify ambiguous requirements with the user before writing code. If the 
       ]
     }
   ],
-  "output_schema": [{ "type": "csv_file | media | html", "label": "Human-readable output label" }]
+  "output_schema": [
+    { "type": "csv_file | media | html", "label": "Human-readable output label" },
+    {
+      "type": "chart",
+      "chartType": "bar | line | area | pie",
+      "label": "Human-readable chart label"
+    }
+  ]
 }
 ```
 
@@ -59,16 +66,49 @@ ALWAYS clarify ambiguous requirements with the user before writing code. If the 
 // Progress — emit periodically during work
 process.stdout.write(JSON.stringify({ event: 'progress', payload: { total, finished } }) + '\n');
 
-// Output — emit once when the result file is ready
+// Output (file-based) — example with file result
 process.stdout.write(
   JSON.stringify({
     event: 'output',
     payload: { path: '/abs/path/to/output.csv', type: 'csv_file' },
   }) + '\n',
 );
+
+// Output (chart) — example with single chart data; no file path
+// chartType: 'bar' | 'line' | 'area' | 'pie'
+// data:      recharts-compatible flat array of objects
+// dataKeys:  series keys to plot (maps to <Bar dataKey="…">, <Line dataKey="…">, etc.)
+// nameKey:   key used for the X-axis label (bar/line/area) or slice label (pie)
+process.stdout.write(
+  JSON.stringify({
+    event: 'output',
+    payload: {
+      type: 'chart',
+      chartType: 'bar',
+      title: 'Revenue by Month',
+      nameKey: 'month',
+      dataKeys: ['revenue', 'expenses'],
+      data: [
+        { month: 'Jan', revenue: 4200, expenses: 3100 },
+        { month: 'Feb', revenue: 5800, expenses: 3400 },
+      ],
+    },
+  }) + '\n',
+);
 ```
 
-`type` must be one of: `csv_file`, `media`, `html`.
+`type` must be one of: `csv_file`, `media`, `html`, `chart`.
+
+### Chart data shapes by type
+
+| chartType | `data` row shape                             | `nameKey`       | `dataKeys`                 |
+| --------- | -------------------------------------------- | --------------- | -------------------------- |
+| `bar`     | `{ [nameKey]: string, [series]: number, … }` | X-axis category | One or more numeric series |
+| `line`    | `{ [nameKey]: string, [series]: number, … }` | X-axis category | One or more numeric series |
+| `area`    | `{ [nameKey]: string, [series]: number, … }` | X-axis category | One or more numeric series |
+| `pie`     | `{ [nameKey]: string, value: number }`       | Slice label     | Always `["value"]`         |
+
+> **Pie charts** always use `value` as the numeric field. Set `dataKeys: ['value']` by convention.
 
 ## Input Type Notes
 
@@ -84,12 +124,13 @@ process.stdout.write(
 
 ## Output Type Notes
 
-| Type       | Notes                                                          |
-| ---------- | -------------------------------------------------------------- |
-| `csv_file` | Write CSV with a header row; emit absolute path                |
-| `media`    | Write image or video file; emit absolute path                  |
-| `html`     | Write HTML file; app sanitises with DOMPurify before rendering |
-| `metric`   | Fixed number result matching Metric Type                       |
+| Type       | Notes                                                                                                                     |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `csv_file` | Write CSV with a header row; emit absolute path via `output` event                                                        |
+| `media`    | Write image or video file; emit absolute path via `output` event                                                          |
+| `html`     | Write HTML file; app sanitises with DOMPurify before rendering; emit absolute path via `output` event                     |
+| `metric`   | Fixed number result matching Metric Type                                                                                  |
+| `chart`    | Recharts-compatible chart delivered inline via `output` event; no file path. Must declare `chartType` in `output_schema`. |
 
 ## Output - Metric Type Notes
 
@@ -128,7 +169,11 @@ const descriptor = {
       ],
     },
   ],
-  output_schema: [{ type: 'csv_file', label: 'Results CSV' }],
+  output_schema: [
+    { type: 'csv_file', label: 'Results CSV' },
+    { type: 'chart', chartType: 'bar', label: 'Results by Category' },
+    { type: 'chart', chartType: 'pie', label: 'Share by Type' },
+  ],
 };
 
 const args = process.argv.slice(2);
@@ -172,7 +217,7 @@ for (const item of items) {
   process.stdout.write(JSON.stringify({ event: 'progress', payload: { total, finished } }) + '\n');
 }
 
-// ── Write output ──────────────────────────────────────────────────────────────
+// ── Write CSV output ──────────────────────────────────────────────────────────
 const outPath = path.join(os.tmpdir(), `my-script-${Date.now()}.csv`);
 const rows = ['Column A,Column B']; // TODO: fill rows
 fs.writeFileSync(outPath, rows.join('\n') + '\n');
@@ -180,6 +225,41 @@ fs.writeFileSync(outPath, rows.join('\n') + '\n');
 process.stdout.write(
   JSON.stringify({ event: 'output', payload: { path: outPath, type: 'csv_file' } }) + '\n',
 );
+
+// ── Emit bar chart ────────────────────────────────────────────────────────────
+process.stdout.write(
+  JSON.stringify({
+    event: 'output',
+    payload: {
+      type: 'chart',
+      chartType: 'bar',
+      title: 'Results by Category',
+      nameKey: 'category',
+      dataKeys: ['count'],
+      data: [
+        // TODO: replace with real rows e.g. { category: 'Images', count: 42 }
+      ],
+    },
+  }) + '\n',
+);
+
+// ── Emit pie chart ────────────────────────────────────────────────────────────
+process.stdout.write(
+  JSON.stringify({
+    event: 'output',
+    payload: {
+      type: 'chart',
+      chartType: 'pie',
+      title: 'Share by Type',
+      nameKey: 'name',
+      dataKeys: ['value'],
+      data: [
+        // TODO: replace with real rows e.g. { name: 'Images', value: 42 }
+      ],
+    },
+  }) + '\n',
+);
+
 process.exit(0);
 ```
 
@@ -203,7 +283,11 @@ descriptor = {
             {"name": "finished", "label": "Finished", "type": "number"},
         ]},
     ],
-    "output_schema": [{"type": "csv_file", "label": "Results CSV"}],
+    "output_schema": [
+        {"type": "csv_file", "label": "Results CSV"},
+        {"type": "chart", "chartType": "bar", "label": "Results by Category"},
+        {"type": "chart", "chartType": "pie", "label": "Share by Type"},
+    ],
 }
 
 if '--superpowers' in sys.argv:
@@ -240,7 +324,7 @@ for item in items:
     finished += 1
     print(json.dumps({"event": "progress", "payload": {"total": total, "finished": finished}}), flush=True)
 
-# ── Write output ──────────────────────────────────────────────────────────────
+# ── Write CSV output ──────────────────────────────────────────────────────────
 out_path = os.path.join(tempfile.gettempdir(), f'my-script-{os.getpid()}.csv')
 with open(out_path, 'w', newline='') as f:
     writer = csv.writer(f)
@@ -248,6 +332,37 @@ with open(out_path, 'w', newline='') as f:
     # TODO: write rows
 
 print(json.dumps({"event": "output", "payload": {"path": out_path, "type": "csv_file"}}), flush=True)
+
+# ── Emit bar chart ────────────────────────────────────────────────────────────
+print(json.dumps({
+    "event": "output",
+    "payload": {
+        "type":      "chart",
+        "chartType": "bar",
+        "title":     "Results by Category",
+        "nameKey":   "category",
+        "dataKeys":  ["count"],
+        "data": [
+            # TODO: replace with real rows e.g. {"category": "Images", "count": 42}
+        ],
+    },
+}), flush=True)
+
+# ── Emit pie chart ────────────────────────────────────────────────────────────
+print(json.dumps({
+    "event": "output",
+    "payload": {
+        "type":      "chart",
+        "chartType": "pie",
+        "title":     "Share by Type",
+        "nameKey":   "name",
+        "dataKeys":  ["value"],
+        "data": [
+            # TODO: replace with real rows e.g. {"name": "Images", "value": 42}
+        ],
+    },
+}), flush=True)
+
 sys.exit(0)
 ```
 
