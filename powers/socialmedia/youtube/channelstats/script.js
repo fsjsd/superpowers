@@ -140,36 +140,6 @@ async function main() {
   }
   process.stdout.write(`Published: ${publishedAt ? publishedAt.slice(0, 10) : 'N/A'}\n`);
 
-  // Metric 1 — subscribers + video count
-  process.stdout.write(
-    JSON.stringify([
-      {
-        event: 'output',
-        payload: {
-          type: 'metric',
-          value: subscribers,
-          label: hiddenSubscriberCount ? 'Subscribers (hidden)' : 'Subscribers',
-          secondary_value: videos,
-          secondary_label: 'Videos',
-        },
-      },
-    ]) + '\n',
-  );
-
-  // Metric 2 — total views
-  process.stdout.write(
-    JSON.stringify([
-      {
-        event: 'output',
-        payload: {
-          type: 'metric',
-          value: views,
-          label: 'Total Views',
-        },
-      },
-    ]) + '\n',
-  );
-
   // Chart — bar chart of key stats
   const chartData = [{ stat: 'Videos', count: videos }];
   if (!hiddenSubscriberCount) {
@@ -181,6 +151,26 @@ async function main() {
 
   process.stdout.write(
     JSON.stringify([
+      // Metric 1 — subscribers + video count
+      // {
+      //   event: 'output',
+      //   payload: {
+      //     type: 'metric',
+      //     value: subscribers,
+      //     label: hiddenSubscriberCount ? 'Subscribers (hidden)' : 'Subscribers',
+      //     secondary_value: videos,
+      //     secondary_label: 'Videos',
+      //   },
+      // },
+      // // Metric 2 — total views
+      // {
+      //   event: 'output',
+      //   payload: {
+      //     type: 'metric',
+      //     value: views,
+      //     label: 'Total Views',
+      //   },
+      // },
       {
         event: 'output',
         payload: {
