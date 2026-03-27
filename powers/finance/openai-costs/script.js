@@ -18,7 +18,7 @@ const descriptor = {
     },
   ],
   output_schema: [
-    { type: 'metric', label: 'Total Cost' },
+    { type: 'metric', label: 'Total Cost', format: { type: 'currency', currency: 'USD' } },
     { type: 'chart', chartType: 'bar', label: 'Daily Costs (USD)' },
   ],
 };
@@ -107,6 +107,7 @@ async function main() {
           label: 'Total (last 7 days)',
           secondary_value: 7,
           secondary_label: 'Days',
+          format: { type: 'currency', currency: 'USD' },
         },
       },
       {

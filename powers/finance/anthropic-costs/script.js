@@ -31,7 +31,7 @@ Create one at https://console.anthropic.com/account/api-keys`,
     },
   ],
   output_schema: [
-    { type: 'metric', label: 'Total Cost' },
+    { type: 'metric', label: 'Total Cost', format: { type: 'currency', currency: 'USD' } },
     { type: 'chart', chartType: 'bar', label: 'Daily Costs (USD)' },
   ],
 };
@@ -152,6 +152,7 @@ async function main() {
           label: `Total (last ${days} day${days === 1 ? '' : 's'})`,
           secondary_value: days,
           secondary_label: 'Days',
+          format: { type: 'currency', currency: 'USD' },
         },
       },
       {

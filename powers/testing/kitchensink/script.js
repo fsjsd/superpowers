@@ -25,7 +25,7 @@ const descriptor = {
     { type: 'media', label: 'Dummy Image' },
     { type: 'html', label: 'Dummy HTML' },
     { type: 'markdown', label: 'Dummy Markdown' },
-    { type: 'metric', label: 'Key Metrics' },
+    { type: 'metric', label: 'Key Metrics', format: { type: 'number', decimals: 0 } },
     { type: 'chart', chartType: 'bar', label: 'Bar Chart' },
     { type: 'chart', chartType: 'line', label: 'Line Chart' },
     { type: 'chart', chartType: 'area', label: 'Area Chart' },
@@ -158,6 +158,7 @@ output({
   secondary_value: 5_678,
   label: 'Total Records',
   secondary_label: 'Total Capacity',
+  format: { type: 'number', decimals: 0 },
 });
 
 // ── 6. bar chart ──────────────────────────────────────────────────────────────

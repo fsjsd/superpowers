@@ -32,8 +32,8 @@ const descriptor = {
     },
   ],
   output_schema: [
-    { type: 'metric', label: 'Subscribers & Videos' },
-    { type: 'metric', label: 'Total Views' },
+    { type: 'metric', label: 'Subscribers & Videos', format: { type: 'number', decimals: 0 } },
+    { type: 'metric', label: 'Total Views', format: { type: 'number', decimals: 0 } },
     { type: 'chart', chartType: 'bar', label: 'Channel Stats' },
   ],
 };
@@ -152,25 +152,27 @@ async function main() {
   process.stdout.write(
     JSON.stringify([
       // Metric 1 — subscribers + video count
-      // {
-      //   event: 'output',
-      //   payload: {
-      //     type: 'metric',
-      //     value: subscribers,
-      //     label: hiddenSubscriberCount ? 'Subscribers (hidden)' : 'Subscribers',
-      //     secondary_value: videos,
-      //     secondary_label: 'Videos',
-      //   },
-      // },
-      // // Metric 2 — total views
-      // {
-      //   event: 'output',
-      //   payload: {
-      //     type: 'metric',
-      //     value: views,
-      //     label: 'Total Views',
-      //   },
-      // },
+      {
+        event: 'output',
+        payload: {
+          type: 'metric',
+          value: subscribers,
+          label: hiddenSubscriberCount ? 'Subscribers (hidden)' : 'Subscribers',
+          secondary_value: videos,
+          secondary_label: 'Videos',
+          format: { type: 'number', decimals: 0 },
+        },
+      },
+      // Metric 2 — total views
+      {
+        event: 'output',
+        payload: {
+          type: 'metric',
+          value: views,
+          label: 'Total Views',
+          format: { type: 'number', decimals: 0 },
+        },
+      },
       {
         event: 'output',
         payload: {

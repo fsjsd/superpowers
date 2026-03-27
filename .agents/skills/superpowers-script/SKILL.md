@@ -55,6 +55,11 @@ ALWAYS clarify ambiguous requirements with the user before writing code. If the 
       "type": "chart",
       "chartType": "bar | line | area | pie",
       "label": "Human-readable chart label"
+    },
+    {
+      "type": "metric",
+      "label": "Total Cost",
+      "format": { "type": "currency", "currency": "USD" }
     }
   ]
 }
@@ -103,7 +108,7 @@ process.stdout.write(
 );
 ```
 
-`type` must be one of: `csv_file`, `media`, `html`, `chart`.
+`type` must be one of: `csv_file`, `media`, `html`, `chart`, `metric`.
 
 ### Chart data shapes by type
 
@@ -147,6 +152,32 @@ process.stdout.write(
 | `secondary_value` | A single numeric value, e.g. "Total Budget"      |
 | `label`           | A descriptive label for the value                |
 | `secondary_label` | A descriptive label for the secondary_value      |
+
+### Metric `format` Object
+
+Declare a `format` object on any `metric` entry in `output_schema` to control how the app renders the value. Omitting `format` renders the raw number.
+
+```json
+{ "type": "metric", "label": "Total Cost",  "format": { "type": "currency", "currency": "USD" } }
+{ "type": "metric", "label": "Revenue",     "format": { "type": "currency", "currency": "AUD" } }
+{ "type": "metric", "label": "Start Date",  "format": { "type": "date",     "style": "medium" } }
+{ "type": "metric", "label": "Start Date",  "format": { "type": "date",     "style": "short"  } }
+{ "type": "metric", "label": "Growth",      "format": { "type": "percent",  "decimals": 1 } }
+{ "type": "metric", "label": "Count",       "format": { "type": "number",   "decimals": 0 } }
+{ "type": "metric", "label": "Score",       "format": { "type": "number",   "decimals": 2 } }
+```
+
+| `format.type` | Extra fields                               | Example output            |
+| ------------- | ------------------------------------------ | ------------------------- |
+| `currency`    | `currency` (ISO 4217)                      | `$1,234.56`, `A$99`       |
+| `date`        | `style`: `short`\|`medium`\|`long`\|`full` | `3/28/26`, `Mar 28, 2026` |
+| `percent`     | `decimals` (default `2`)                   | `12.3%`                   |
+| `number`      | `decimals` (default `2`)                   | `1,234`, `3.14`           |
+
+- **`currency`** — values are rendered with `Intl.NumberFormat` using `style: 'currency'`. `currency` must be a valid ISO 4217 code (e.g. `"USD"`, `"AUD"`, `"EUR"`).
+- **`date`** — values must be a Unix timestamp (ms) or ISO 8601 string. `style` maps to `Intl.DateTimeFormat` `dateStyle`.
+- **`percent`** — raw value is multiplied by 100 before display (pass `0.123` → renders `12.3%`).
+- **`number`** — plain numeric formatting with fixed decimal places.
 
 ---
 
