@@ -11,3 +11,16 @@ pre-commit:
     - name: prettier
       run: pnpm exec prettier --write {staged_files} && git add {staged_files}
       glob: '*.{js,mjs,cjs,json,md,yml,yaml}'
+
+    - name: generate-manifests
+      glob: 'powers/**/script.{js,py}'
+      run: |
+        for f in {staged_files}; do
+          dir=$(dirname "$f")
+          if [[ "$f" == *.js ]]; then
+            node "$f" --superpowers=describe > "$dir/manifest.json"
+          elif [[ "$f" == *.py ]]; then
+            python3 "$f" --superpowers describe > "$dir/manifest.json"
+          fi
+          git add "$dir/manifest.json"
+        done
