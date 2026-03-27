@@ -17,7 +17,10 @@ const descriptor = {
       default: 'OPENAI_ADMIN_API_KEY',
     },
   ],
-  output_schema: [{ type: 'chart', chartType: 'bar', label: 'Daily Costs (USD)' }],
+  output_schema: [
+    { type: 'metric', label: 'Total Cost' },
+    { type: 'chart', chartType: 'bar', label: 'Daily Costs (USD)' },
+  ],
 };
 
 const args = process.argv.slice(2);
@@ -89,11 +92,23 @@ async function main() {
     const date = new Date(bucket.start_time * 1000).toISOString().split('T')[0];
     const results = bucket.results || [];
     const cost = results.reduce((sum, r) => sum + (Number(r.amount?.value) || 0), 0);
-    return { date, cost: parseFloat(cost.toFixed(6)) };
+    return { date, cost: parseFloat(cost.toFixed(2)) };
   });
+
+  const totalCost = parseFloat(data.reduce((sum, d) => sum + d.cost, 0).toFixed(2));
 
   process.stdout.write(
     JSON.stringify([
+      {
+        event: 'output',
+        payload: {
+          type: 'metric',
+          value: totalCost,
+          label: 'Total (last 7 days)',
+          secondary_value: 7,
+          secondary_label: 'Days',
+        },
+      },
       {
         event: 'output',
         payload: {
