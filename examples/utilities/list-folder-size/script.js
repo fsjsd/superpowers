@@ -118,10 +118,12 @@ for (let i = 0; i < subfolders.length; i++) {
   results.push({ name, bytes, human: formatBytes(bytes) });
 
   console.log(
-    JSON.stringify({
-      event: 'progress',
-      payload: { total, finished: i + 1 },
-    }),
+    JSON.stringify([
+      {
+        event: 'progress',
+        payload: { total, finished: i + 1 },
+      },
+    ]),
   );
 }
 
@@ -137,10 +139,12 @@ const rows = results
 fs.writeFileSync(outputPath, header + rows + '\n', 'utf8');
 
 console.log(
-  JSON.stringify({
-    event: 'output',
-    payload: { path: outputPath, type: 'csv_file' },
-  }),
+  JSON.stringify([
+    {
+      event: 'output',
+      payload: { path: outputPath, type: 'csv_file' },
+    },
+  ]),
 );
 
 process.exit(0);

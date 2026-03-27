@@ -93,17 +93,19 @@ async function main() {
   });
 
   process.stdout.write(
-    JSON.stringify({
-      event: 'output',
-      payload: {
-        type: 'chart',
-        chartType: 'bar',
-        title: 'OpenAI Daily Costs (USD)',
-        nameKey: 'date',
-        dataKeys: ['cost'],
-        data,
+    JSON.stringify([
+      {
+        event: 'output',
+        payload: {
+          type: 'chart',
+          chartType: 'bar',
+          title: 'OpenAI Daily Costs (USD)',
+          nameKey: 'date',
+          dataKeys: ['cost'],
+          data,
+        },
       },
-    }) + '\n',
+    ]) + '\n',
   );
 }
 

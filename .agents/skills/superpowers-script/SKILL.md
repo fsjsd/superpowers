@@ -15,7 +15,7 @@ ALWAYS clarify ambiguous requirements with the user before writing code. If the 
 
 1. **Describe mode** — When invoked with `--superpowers=describe`, print a single JSON descriptor to stdout and exit 0. Print nothing else.
 2. **Run mode** — Inputs are passed as `--name=value` CLI args matching `input_schema[].name`.
-3. **Structured events** — Emit newline-delimited JSON on stdout. Any non-JSON line is treated as a plain log message.
+3. **Structured events** — Emit newline-delimited JSON on stdout. Any non-JSON line is treated as a plain log message. Emit structured events with the shape `[{ event: string, payload: object }]` for Super Powers to consume. See "Event Shapes" below.
 4. **Exit codes** — `0` on success. Non-zero on failure with a descriptive message on stderr.
 5. **Language** — Use Node.js (CommonJS `require()`) unless the task specifically requires Python. Do not use ESM (`import`).
 
@@ -64,14 +64,18 @@ ALWAYS clarify ambiguous requirements with the user before writing code. If the 
 
 ```js
 // Progress — emit periodically during work
-process.stdout.write(JSON.stringify({ event: 'progress', payload: { total, finished } }) + '\n');
+process.stdout.write(
+  JSON.stringify([{ event: 'progress', payload: { total: total, finished: finished } }]) + '\n',
+);
 
 // Output (file-based) — example with file result
 process.stdout.write(
-  JSON.stringify({
-    event: 'output',
-    payload: { path: '/abs/path/to/output.csv', type: 'csv_file' },
-  }) + '\n',
+  JSON.stringify([
+    {
+      event: 'output',
+      payload: { path: '/abs/path/to/output.csv', type: 'csv_file' },
+    },
+  ]) + '\n',
 );
 
 // Output (chart) — example with single chart data; no file path
@@ -80,20 +84,22 @@ process.stdout.write(
 // dataKeys:  series keys to plot (maps to <Bar dataKey="…">, <Line dataKey="…">, etc.)
 // nameKey:   key used for the X-axis label (bar/line/area) or slice label (pie)
 process.stdout.write(
-  JSON.stringify({
-    event: 'output',
-    payload: {
-      type: 'chart',
-      chartType: 'bar',
-      title: 'Revenue by Month',
-      nameKey: 'month',
-      dataKeys: ['revenue', 'expenses'],
-      data: [
-        { month: 'Jan', revenue: 4200, expenses: 3100 },
-        { month: 'Feb', revenue: 5800, expenses: 3400 },
-      ],
+  JSON.stringify([
+    {
+      event: 'output',
+      payload: {
+        type: 'chart',
+        chartType: 'bar',
+        title: 'Revenue by Month',
+        nameKey: 'month',
+        dataKeys: ['revenue', 'expenses'],
+        data: [
+          { month: 'Jan', revenue: 4200, expenses: 3100 },
+          { month: 'Feb', revenue: 5800, expenses: 3400 },
+        ],
+      },
     },
-  }) + '\n',
+  ]) + '\n',
 );
 ```
 
@@ -129,6 +135,7 @@ process.stdout.write(
 | `csv_file` | Write CSV with a header row; emit absolute path via `output` event                                                        |
 | `media`    | Write image or video file; emit absolute path via `output` event                                                          |
 | `html`     | Write HTML file; app sanitises with DOMPurify before rendering; emit absolute path via `output` event                     |
+| `markdown` | Write Markdown file; app sanitises with DOMPurify before rendering; emit absolute path via `output` event                 |
 | `metric`   | Fixed number result matching Metric Type                                                                                  |
 | `chart`    | Recharts-compatible chart delivered inline via `output` event; no file path. Must declare `chartType` in `output_schema`. |
 
@@ -209,12 +216,16 @@ const items = []; // TODO: collect items
 const total = items.length;
 let finished = 0;
 
-process.stdout.write(JSON.stringify({ event: 'progress', payload: { total, finished } }) + '\n');
+process.stdout.write(
+  JSON.stringify([{ event: 'progress', payload: { total: total, finished: finished } }]) + '\n',
+);
 
 for (const item of items) {
   // TODO: process item
   finished++;
-  process.stdout.write(JSON.stringify({ event: 'progress', payload: { total, finished } }) + '\n');
+  process.stdout.write(
+    JSON.stringify([{ event: 'progress', payload: { total: total, finished: finished } }]) + '\n',
+  );
 }
 
 // ── Write CSV output ──────────────────────────────────────────────────────────
@@ -223,41 +234,45 @@ const rows = ['Column A,Column B']; // TODO: fill rows
 fs.writeFileSync(outPath, rows.join('\n') + '\n');
 
 process.stdout.write(
-  JSON.stringify({ event: 'output', payload: { path: outPath, type: 'csv_file' } }) + '\n',
+  JSON.stringify([{ event: 'output', payload: { path: outPath, type: 'csv_file' } }]) + '\n',
 );
 
 // ── Emit bar chart ────────────────────────────────────────────────────────────
 process.stdout.write(
-  JSON.stringify({
-    event: 'output',
-    payload: {
-      type: 'chart',
-      chartType: 'bar',
-      title: 'Results by Category',
-      nameKey: 'category',
-      dataKeys: ['count'],
-      data: [
-        // TODO: replace with real rows e.g. { category: 'Images', count: 42 }
-      ],
+  JSON.stringify([
+    {
+      event: 'output',
+      payload: {
+        type: 'chart',
+        chartType: 'bar',
+        title: 'Results by Category',
+        nameKey: 'category',
+        dataKeys: ['count'],
+        data: [
+          // TODO: replace with real rows e.g. { category: 'Images', count: 42 }
+        ],
+      },
     },
-  }) + '\n',
+  ]) + '\n',
 );
 
 // ── Emit pie chart ────────────────────────────────────────────────────────────
 process.stdout.write(
-  JSON.stringify({
-    event: 'output',
-    payload: {
-      type: 'chart',
-      chartType: 'pie',
-      title: 'Share by Type',
-      nameKey: 'name',
-      dataKeys: ['value'],
-      data: [
-        // TODO: replace with real rows e.g. { name: 'Images', value: 42 }
-      ],
+  JSON.stringify([
+    {
+      event: 'output',
+      payload: {
+        type: 'chart',
+        chartType: 'pie',
+        title: 'Share by Type',
+        nameKey: 'name',
+        dataKeys: ['value'],
+        data: [
+          // TODO: replace with real rows e.g. { name: 'Images', value: 42 }
+        ],
+      },
     },
-  }) + '\n',
+  ]) + '\n',
 );
 
 process.exit(0);
@@ -317,12 +332,12 @@ items = []  # TODO: collect items
 total = len(items)
 finished = 0
 
-print(json.dumps({"event": "progress", "payload": {"total": total, "finished": finished}}), flush=True)
+print(json.dumps([{"event": "progress", "payload": {"total": total, "finished": finished}}]), flush=True)
 
 for item in items:
     # TODO: process item
     finished += 1
-    print(json.dumps({"event": "progress", "payload": {"total": total, "finished": finished}}), flush=True)
+    print(json.dumps([{"event": "progress", "payload": {"total": total, "finished": finished}}]), flush=True)
 
 # ── Write CSV output ──────────────────────────────────────────────────────────
 out_path = os.path.join(tempfile.gettempdir(), f'my-script-{os.getpid()}.csv')
@@ -331,10 +346,10 @@ with open(out_path, 'w', newline='') as f:
     writer.writerow(['Column A', 'Column B'])
     # TODO: write rows
 
-print(json.dumps({"event": "output", "payload": {"path": out_path, "type": "csv_file"}}), flush=True)
+print(json.dumps([{"event": "output", "payload": {"path": out_path, "type": "csv_file"}}]), flush=True)
 
 # ── Emit bar chart ────────────────────────────────────────────────────────────
-print(json.dumps({
+print(json.dumps([{
     "event": "output",
     "payload": {
         "type":      "chart",
@@ -346,10 +361,10 @@ print(json.dumps({
             # TODO: replace with real rows e.g. {"category": "Images", "count": 42}
         ],
     },
-}), flush=True)
+}]), flush=True)
 
 # ── Emit pie chart ────────────────────────────────────────────────────────────
-print(json.dumps({
+print(json.dumps([{
     "event": "output",
     "payload": {
         "type":      "chart",
@@ -361,7 +376,7 @@ print(json.dumps({
             # TODO: replace with real rows e.g. {"name": "Images", "value": 42}
         ],
     },
-}), flush=True)
+}]), flush=True)
 
 sys.exit(0)
 ```

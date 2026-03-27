@@ -93,7 +93,7 @@ if (clocCheck.error) {
 }
 
 process.stdout.write(
-  JSON.stringify({ event: 'progress', payload: { total: 1, finished: 0 } }) + '\n',
+  JSON.stringify([{ event: 'progress', payload: { total: 1, finished: 0 } }]) + '\n',
 );
 
 // Build cloc arguments
@@ -167,9 +167,9 @@ try {
 }
 
 process.stdout.write(
-  JSON.stringify({ event: 'progress', payload: { total: 1, finished: 1 } }) + '\n',
+  JSON.stringify([{ event: 'progress', payload: { total: 1, finished: 1 } }]) + '\n',
 );
 process.stdout.write(
-  JSON.stringify({ event: 'output', payload: { path: outputPath, type: 'csv_file' } }) + '\n',
+  JSON.stringify([{ event: 'output', payload: { path: outputPath, type: 'csv_file' } }]) + '\n',
 );
 process.exit(0);

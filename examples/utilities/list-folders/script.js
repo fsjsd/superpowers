@@ -139,7 +139,9 @@ for (const folderPath of allFolders) {
   );
 
   finished++;
-  process.stdout.write(JSON.stringify({ event: 'progress', payload: { total, finished } }) + '\n');
+  process.stdout.write(
+    JSON.stringify([{ event: 'progress', payload: { total, finished } }]) + '\n',
+  );
 }
 
 // Write output CSV
@@ -152,6 +154,6 @@ try {
 }
 
 process.stdout.write(
-  JSON.stringify({ event: 'output', payload: { path: outputPath, type: 'csv_file' } }) + '\n',
+  JSON.stringify([{ event: 'output', payload: { path: outputPath, type: 'csv_file' } }]) + '\n',
 );
 process.exit(0);
