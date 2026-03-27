@@ -1,5 +1,5 @@
 ---
-name: superpowers-script
+name: superpowers
 description: Use when writing, creating, or fixing a Superpowers script — a Node.js or Python script that runs inside the Super Powers Electron app. Triggers on requests like "write a superpowers script", "create a new power", "add a script to superpowers", or "make a script that follows the superpowers protocol".
 ---
 
