@@ -93,18 +93,20 @@ The descriptor shape:
 
 ### 2. Run mode
 
-Inputs are passed as `--name=value` CLI arguments. Emit structured output as **newline-delimited JSON** on stdout:
+Inputs are passed as `--name=value` CLI arguments. Emit structured output as **newline-delimited JSON arrays of events** on stdout:
 
 ```js
 // Progress update
-console.log(JSON.stringify({ event: 'progress', payload: { total: 100, finished: 42 } }));
+console.log(JSON.stringify([{ event: 'progress', payload: { total: 100, finished: 42 } }]));
 
 // Final output (file path)
 console.log(
-  JSON.stringify({
-    event: 'output',
-    payload: { path: '/abs/path/to/output.csv', type: 'csv_file' },
-  }),
+  JSON.stringify([
+    {
+      event: 'output',
+      payload: { path: '/abs/path/to/output.csv', type: 'csv_file' },
+    },
+  ]),
 );
 ```
 
