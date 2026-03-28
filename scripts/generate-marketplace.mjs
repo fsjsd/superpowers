@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Generates the marketplace output under /marketplace:
- *   marketplace/scripts/<path>/manifest.json  (+ marketplace.png if present)
+ *   marketplace/scripts/<path>/manifest.json  (+ marketplace.webp if PNG present)
  *   marketplace/categories/<slug>.json         (one per category)
  *   marketplace/marketplace.json               (root index)
  */
@@ -9,6 +9,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import sharp from 'sharp';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -33,6 +34,7 @@ function toSlug(category) {
 function findManifestDirs(dir, results = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
+    if (entry.name === '_internal') continue;
     const child = path.join(dir, entry.name);
     if (fs.existsSync(path.join(child, 'manifest.json'))) {
       results.push(child);
@@ -61,9 +63,23 @@ for (const dir of manifestDirs) {
   // Relative path from powers/, e.g. "testing/charts-python"
   const rel = path.relative(POWERS_DIR, dir);
 
-  // --- Copy entire script folder ---
+  // --- Copy entire script folder (excluding PNG — we convert to WebP instead) ---
   const destDir = path.join(SCRIPTS_DIR, rel);
-  fs.cpSync(dir, destDir, { recursive: true });
+  fs.mkdirSync(destDir, { recursive: true });
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) continue; // manifest dirs are flat
+    const srcFile = path.join(dir, entry.name);
+    if (entry.name.toLowerCase().endsWith('.png')) continue; // handled below
+    fs.copyFileSync(srcFile, path.join(destDir, entry.name));
+  }
+
+  // Convert marketplace.png → marketplace.webp if it exists
+  const srcPng = path.join(dir, 'marketplace.png');
+  const hasImage = fs.existsSync(srcPng);
+  if (hasImage) {
+    const destWebp = path.join(destDir, 'marketplace.webp');
+    await sharp(srcPng).webp({ quality: 60, effort: 6 }).toFile(destWebp);
+  }
 
   // --- Parse manifest ---
   const manifest = JSON.parse(fs.readFileSync(path.join(dir, 'manifest.json'), 'utf8'));
@@ -82,7 +98,7 @@ for (const dir of manifestDirs) {
 
   // Paths are relative to the repo root (forward slashes, no leading slash)
   const scriptPath = `marketplace/scripts/${rel}/manifest.json`.replace(/\\/g, '/');
-  const imagePath = `marketplace/scripts/${rel}/marketplace.png`.replace(/\\/g, '/');
+  const imagePath = `marketplace/scripts/${rel}/marketplace.webp`.replace(/\\/g, '/');
 
   categories.get(slug).scripts.push({
     name,
@@ -90,7 +106,7 @@ for (const dir of manifestDirs) {
     ...(icon ? { icon } : {}),
     category,
     path: scriptPath,
-    image: imagePath,
+    ...(hasImage ? { image: imagePath } : {}),
   });
 }
 
