@@ -31,6 +31,7 @@ powers/
   <category>/
     <script-name>/
       script.js        ← required
+      marketplace.png  ← required
       README.md        ← optional but encouraged
 ```
 
@@ -126,6 +127,20 @@ node powers/<category>/<script-name>/script.js --superpowers=describe
 # Verify it outputs valid JSON
 node powers/<category>/<script-name>/script.js --superpowers=describe | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log('OK:', d.name);"
 ```
+
+---
+
+## Marketplace image
+
+Use this prompt in [Google Gemini](https://gemini.google.com/) to generate a marketplace image. Replace placeholders appropriately
+
+```
+Create a painterly illustration of a smiling [MALE|FEMALE] super hero, [COLOR] suit (half body shot, dynamic pose) - Their super power is the ability to [WHAT_SCRIPT_DOES]. 4:3 aspect ratio
+```
+
+Make sure you are using Gemini Pro for image creation. Click "Download full size" after generation to access 1200x896 image (lower resolutions will be automatically rejected).
+
+Marketplace image acceptance not guaranteed, we may replace your image or ask you to change it.
 
 ---
 
