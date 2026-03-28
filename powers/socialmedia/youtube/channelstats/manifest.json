@@ -26,9 +26,24 @@
     {
       "type": "metric",
       "label": "Subscribers & Videos",
-      "format": { "type": "number", "decimals": 0 }
+      "format": {
+        "type": "number",
+        "decimals": 0
+      }
     },
-    { "type": "metric", "label": "Total Views", "format": { "type": "number", "decimals": 0 } },
-    { "type": "chart", "chartType": "bar", "label": "Channel Stats" }
-  ]
+    {
+      "type": "metric",
+      "label": "Total Views",
+      "format": {
+        "type": "number",
+        "decimals": 0
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "bar",
+      "label": "Channel Stats"
+    }
+  ],
+  "files": ["script.js"]
 }

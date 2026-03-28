@@ -26,10 +26,24 @@
     {
       "type": "progress",
       "payload_schema": [
-        { "name": "total", "label": "Total steps", "type": "number" },
-        { "name": "finished", "label": "Steps completed", "type": "number" }
+        {
+          "name": "total",
+          "label": "Total steps",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Steps completed",
+          "type": "number"
+        }
       ]
     }
   ],
-  "output_schema": [{ "type": "csv_file", "label": "Lines of code by language" }]
+  "output_schema": [
+    {
+      "type": "csv_file",
+      "label": "Lines of code by language"
+    }
+  ],
+  "files": ["script.js"]
 }

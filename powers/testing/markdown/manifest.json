@@ -6,5 +6,11 @@
   "icon": "file-text",
   "input_schema": [],
   "events": [],
-  "output_schema": [{ "type": "markdown", "label": "Dummy Markdown Report" }]
+  "output_schema": [
+    {
+      "type": "markdown",
+      "label": "Dummy Markdown Report"
+    }
+  ],
+  "files": ["script.js"]
 }

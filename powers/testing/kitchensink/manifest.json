@@ -9,20 +9,64 @@
     {
       "type": "progress",
       "payload_schema": [
-        { "name": "total", "label": "Total outputs", "type": "number" },
-        { "name": "finished", "label": "Outputs emitted", "type": "number" }
+        {
+          "name": "total",
+          "label": "Total outputs",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Outputs emitted",
+          "type": "number"
+        }
       ]
     }
   ],
   "output_schema": [
-    { "type": "csv_file", "label": "Dummy CSV" },
-    { "type": "media", "label": "Dummy Image" },
-    { "type": "html", "label": "Dummy HTML" },
-    { "type": "markdown", "label": "Dummy Markdown" },
-    { "type": "metric", "label": "Key Metrics", "format": { "type": "number", "decimals": 0 } },
-    { "type": "chart", "chartType": "bar", "label": "Bar Chart" },
-    { "type": "chart", "chartType": "line", "label": "Line Chart" },
-    { "type": "chart", "chartType": "area", "label": "Area Chart" },
-    { "type": "chart", "chartType": "pie", "label": "Pie Chart" }
-  ]
+    {
+      "type": "csv_file",
+      "label": "Dummy CSV"
+    },
+    {
+      "type": "media",
+      "label": "Dummy Image"
+    },
+    {
+      "type": "html",
+      "label": "Dummy HTML"
+    },
+    {
+      "type": "markdown",
+      "label": "Dummy Markdown"
+    },
+    {
+      "type": "metric",
+      "label": "Key Metrics",
+      "format": {
+        "type": "number",
+        "decimals": 0
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "bar",
+      "label": "Bar Chart"
+    },
+    {
+      "type": "chart",
+      "chartType": "line",
+      "label": "Line Chart"
+    },
+    {
+      "type": "chart",
+      "chartType": "area",
+      "label": "Area Chart"
+    },
+    {
+      "type": "chart",
+      "chartType": "pie",
+      "label": "Pie Chart"
+    }
+  ],
+  "files": ["script.js"]
 }

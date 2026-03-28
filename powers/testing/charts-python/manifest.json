@@ -15,9 +15,26 @@
     }
   ],
   "output_schema": [
-    { "type": "chart", "chartType": "bar", "label": "Bar Chart" },
-    { "type": "chart", "chartType": "line", "label": "Line Chart" },
-    { "type": "chart", "chartType": "area", "label": "Area Chart" },
-    { "type": "chart", "chartType": "pie", "label": "Pie Chart" }
-  ]
+    {
+      "type": "chart",
+      "chartType": "bar",
+      "label": "Bar Chart"
+    },
+    {
+      "type": "chart",
+      "chartType": "line",
+      "label": "Line Chart"
+    },
+    {
+      "type": "chart",
+      "chartType": "area",
+      "label": "Area Chart"
+    },
+    {
+      "type": "chart",
+      "chartType": "pie",
+      "label": "Pie Chart"
+    }
+  ],
+  "files": ["script.py"]
 }

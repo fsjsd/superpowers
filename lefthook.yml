@@ -17,13 +17,7 @@ pre-commit:
       run: |
         set -euo pipefail
         for f in {staged_files}; do
-          dir=$(dirname "$f")
-          if [[ "$f" == *.js ]]; then
-            node "$f" --superpowers=describe > "$dir/manifest.json"
-          elif [[ "$f" == *.py ]]; then
-            python3 "$f" --superpowers describe > "$dir/manifest.json"
-          fi
-          git add "$dir/manifest.json"
+          bash scripts/generate-manifests.sh "$f"
         done
 
     - name: oxlint
