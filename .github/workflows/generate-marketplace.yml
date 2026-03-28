@@ -18,6 +18,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install sharp
+        run: npm install sharp
+
       - name: Generate marketplace
         run: node scripts/generate-marketplace.mjs
 
