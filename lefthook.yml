@@ -4,6 +4,28 @@ pre-commit:
     - name: gitleaks
       run: gitleaks protect --staged --redact
 
+    - name: validate-scripts
+      glob: 'powers/**/script.{js,py}'
+      run: bash scripts/validate-scripts.sh {staged_files}
+
+    - name: validate-marketplace-images
+      glob: 'powers/**/script.{js,py}'
+      run: bash scripts/validate-marketplace-images.sh {staged_files}
+
+    - name: generate-manifests
+      glob: 'powers/**/script.{js,py}'
+      run: |
+        set -euo pipefail
+        for f in {staged_files}; do
+          dir=$(dirname "$f")
+          if [[ "$f" == *.js ]]; then
+            node "$f" --superpowers=describe > "$dir/manifest.json"
+          elif [[ "$f" == *.py ]]; then
+            python3 "$f" --superpowers describe > "$dir/manifest.json"
+          fi
+          git add "$dir/manifest.json"
+        done
+
     - name: oxlint
       run: pnpm exec oxlint {staged_files}
       glob: '*.{js,mjs,cjs}'

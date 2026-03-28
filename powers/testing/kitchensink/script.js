@@ -4,7 +4,7 @@ const path = require('path');
 const os = require('os');
 
 const descriptor = {
-  name: 'Kitchen Sink — All Output Types',
+  name: 'Demo - All Output Types',
   description:
     'Emits dummy data for every supported output type: csv_file, media, html, markdown, metric, and all four chart types.',
   category: 'Testing',

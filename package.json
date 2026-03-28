@@ -1,9 +1,11 @@
 {
   "name": "superpowers",
   "private": true,
+  "packageManager": "pnpm@10.32.0",
   "scripts": {
     "lint": "oxlint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "marketplace": "node scripts/generate-marketplace.mjs"
   },
   "devDependencies": {
     "lefthook": "^1.11.6",

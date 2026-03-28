@@ -1,7 +1,7 @@
 'use strict';
 
 const descriptor = {
-  name: 'Dummy Chart Data',
+  name: 'Demo - Charts (Javascript)',
   description: 'Returns randomised dummy data for all supported chart types.',
   category: 'Testing',
   requirements: 'Node v18+',

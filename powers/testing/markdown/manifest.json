@@ -1,0 +1,10 @@
+{
+  "name": "Demo - Markdown response",
+  "description": "Returns dummy markdown content to test the markdown output schema type.",
+  "category": "Testing",
+  "requirements": "Node v18+",
+  "icon": "file-text",
+  "input_schema": [],
+  "events": [],
+  "output_schema": [{ "type": "markdown", "label": "Dummy Markdown Report" }]
+}

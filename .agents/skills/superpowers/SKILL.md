@@ -1,5 +1,5 @@
 ---
-name: superpowers-script
+name: superpowers
 description: Use when writing, creating, or fixing a Superpowers script — a Node.js or Python script that runs inside the Super Powers Electron app. Triggers on requests like "write a superpowers script", "create a new power", "add a script to superpowers", or "make a script that follows the superpowers protocol".
 ---
 
@@ -7,9 +7,14 @@ description: Use when writing, creating, or fixing a Superpowers script — a No
 
 Scripts run inside the **Super Powers** Electron app. They must conform to the protocol below exactly.
 
-## Analysis
+## ⛔ STOP — Ask Before Writing
 
-ALWAYS clarify ambiguous requirements with the user before writing code. If the user has not specified a required input, ask them to choose from a list of options or provide a custom value. ALWAYS ask what output they want and in what format
+NEVER write a script until you have confirmed with the user:
+
+1. **What outputs they want** — list only from: `csv_file`, `media`, `html`, `markdown`, `chart`, `metric`
+2. **What inputs are required** — only ask if non-obvious
+
+Do not infer or add extra outputs. Only implement what was explicitly confirmed.
 
 ## Rules
 
@@ -207,10 +212,11 @@ const descriptor = {
       ],
     },
   ],
+  // ⚠️ BOILERPLATE ONLY — delete output types not confirmed with the user
   output_schema: [
-    { type: 'csv_file', label: 'Results CSV' },
-    { type: 'chart', chartType: 'bar', label: 'Results by Category' },
-    { type: 'chart', chartType: 'pie', label: 'Share by Type' },
+    { type: 'csv_file', label: 'Results CSV' }, // ← keep only what was asked for
+    { type: 'chart', chartType: 'bar', label: 'Results by Category' }, // ← keep only what was asked for
+    { type: 'chart', chartType: 'pie', label: 'Share by Type' }, // ← keep only what was asked for
   ],
 };
 

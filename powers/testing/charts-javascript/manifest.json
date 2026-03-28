@@ -1,0 +1,23 @@
+{
+  "name": "Demo - Charts (JavaScript)",
+  "description": "Returns randomised dummy data for all supported chart types.",
+  "category": "Testing",
+  "requirements": "Node v18+",
+  "icon": "chart-bar",
+  "input_schema": [
+    {
+      "name": "data-points",
+      "type": "number",
+      "label": "Data Points",
+      "description": "Number of data points to generate per chart",
+      "required": false,
+      "default": "10"
+    }
+  ],
+  "output_schema": [
+    { "type": "chart", "chartType": "bar", "label": "Bar Chart" },
+    { "type": "chart", "chartType": "line", "label": "Line Chart" },
+    { "type": "chart", "chartType": "area", "label": "Area Chart" },
+    { "type": "chart", "chartType": "pie", "label": "Pie Chart" }
+  ]
+}

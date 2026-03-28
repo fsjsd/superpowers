@@ -1,0 +1,35 @@
+{
+  "name": "Lines of Code",
+  "description": "Counts lines of code per language in a folder using cloc and exports results as a CSV.",
+  "category": "Code",
+  "requirements": "Node v18+, cloc installed (brew install cloc / apt install cloc)",
+  "icon": "file-code",
+  "input_schema": [
+    {
+      "name": "folder",
+      "type": "folderpath",
+      "label": "Folder",
+      "description": "The folder to analyse",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "exclude-dir",
+      "type": "text",
+      "label": "Exclude directories",
+      "description": "Comma-separated list of directory names to exclude (e.g. node_modules,.git)",
+      "required": false,
+      "default": "node_modules,.git,venv,.venv,env,dist,build,.next"
+    }
+  ],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        { "name": "total", "label": "Total steps", "type": "number" },
+        { "name": "finished", "label": "Steps completed", "type": "number" }
+      ]
+    }
+  ],
+  "output_schema": [{ "type": "csv_file", "label": "Lines of code by language" }]
+}

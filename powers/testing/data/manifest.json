@@ -1,0 +1,18 @@
+{
+  "name": "Demo - CSV data",
+  "description": "Returns dummy csv_file data covering every supported data type for testing.",
+  "category": "Testing",
+  "requirements": "Node v18+",
+  "icon": "table",
+  "input_schema": [],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        { "name": "total", "label": "Total rows", "type": "number" },
+        { "name": "finished", "label": "Rows written", "type": "number" }
+      ]
+    }
+  ],
+  "output_schema": [{ "type": "csv_file", "label": "Dummy data CSV" }]
+}

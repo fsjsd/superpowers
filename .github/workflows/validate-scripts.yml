@@ -1,0 +1,32 @@
+name: Validate Scripts
+
+on:
+  pull_request:
+    paths:
+      - 'powers/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate describe mode for changed scripts
+        run: |
+          changed=$(git diff --name-only ${{ github.event.pull_request.base.sha }}...HEAD)
+          scripts=$(echo "$changed" | grep -E '^powers/.*/script\.(js|py)$' || true)
+          if [ -z "$scripts" ]; then
+            echo "No script files changed."
+            exit 0
+          fi
+          bash scripts/validate-scripts.sh $scripts
