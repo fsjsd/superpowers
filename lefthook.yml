@@ -4,6 +4,10 @@ pre-commit:
     - name: gitleaks
       run: gitleaks protect --staged --redact
 
+    - name: validate-scripts
+      glob: 'powers/**/script.{js,py}'
+      run: bash scripts/validate-scripts.sh {staged_files}
+
     - name: generate-manifests
       glob: 'powers/**/script.{js,py}'
       run: |

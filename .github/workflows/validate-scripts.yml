@@ -23,66 +23,10 @@ jobs:
 
       - name: Validate describe mode for changed scripts
         run: |
-          failed=0
-
           changed=$(git diff --name-only ${{ github.event.pull_request.base.sha }}...HEAD)
-
-          validate_output() {
-            local output="$1"
-            local validation
-            validation=$(node -e "
-              try {
-                const d = JSON.parse(process.argv[1]);
-                if (!d.name) { console.error('Missing required field: name'); process.exit(1); }
-                if (!d.description) { console.error('Missing required field: description'); process.exit(1); }
-                console.log('OK: ' + d.name);
-              } catch (e) {
-                console.error('Invalid JSON: ' + e.message);
-                process.exit(1);
-              }
-            " "$output" 2>&1)
-            local val_exit=$?
-            echo "$validation"
-            return $val_exit
-          }
-
-          while IFS= read -r script; do
-            echo "--- Checking: $script"
-            output=$(node "$script" --superpowers=describe 2>&1)
-            exit_code=$?
-            if [ $exit_code -ne 0 ]; then
-              echo "FAIL: script exited with code $exit_code"
-              echo "$output"
-              failed=1
-              continue
-            fi
-            if ! validate_output "$output"; then
-              echo "FAIL: $script"
-              failed=1
-            fi
-          done < <(echo "$changed" | grep -E '^powers/.*/script\.js$')
-
-          while IFS= read -r script; do
-            echo "--- Checking: $script"
-            output=$(python3 "$script" --superpowers describe 2>&1)
-            exit_code=$?
-            if [ $exit_code -ne 0 ]; then
-              echo "FAIL: script exited with code $exit_code"
-              echo "$output"
-              failed=1
-              continue
-            fi
-            if ! validate_output "$output"; then
-              echo "FAIL: $script"
-              failed=1
-            fi
-          done < <(echo "$changed" | grep -E '^powers/.*/script\.py$')
-
-          if [ $failed -ne 0 ]; then
-            echo ""
-            echo "One or more scripts failed validation. See above for details."
-            exit 1
+          scripts=$(echo "$changed" | grep -E '^powers/.*/script\.(js|py)$' || true)
+          if [ -z "$scripts" ]; then
+            echo "No script files changed."
+            exit 0
           fi
-
-          echo ""
-          echo "All changed scripts passed."
+          bash scripts/validate-scripts.sh $scripts
