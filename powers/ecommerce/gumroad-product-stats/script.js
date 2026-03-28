@@ -31,7 +31,7 @@ const descriptor = {
   output_schema: [
     { type: 'csv_file', label: 'Products CSV' },
     { type: 'chart', chartType: 'bar', label: 'Revenue by Product (USD)' },
-    { type: 'metric', label: 'Total Products', format: { type: 'number' } },
+    { type: 'metric', label: 'Total Products', format: { type: 'number', decimals: 0 } },
   ],
 };
 
@@ -73,7 +73,7 @@ function httpsGet(url, headers) {
         }
         try {
           resolve(JSON.parse(data));
-        } catch (e) {
+        } catch (_e) {
           reject(new Error(`Failed to parse response: ${data}`));
         }
       });
@@ -177,7 +177,7 @@ async function main() {
           type: 'metric',
           label: 'Total Products',
           value: totalProducts,
-          format: { type: 'number' },
+          format: { type: 'number', decimals: 0 },
         },
       },
     ]) + '\n',

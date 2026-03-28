@@ -36,7 +36,8 @@
       "type": "metric",
       "label": "Total Products",
       "format": {
-        "type": "number"
+        "type": "number",
+        "decimals": 0
       }
     }
   ],

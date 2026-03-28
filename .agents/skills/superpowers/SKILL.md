@@ -336,7 +336,7 @@ descriptor = {
         ]},
     ],
     "output_schema": [
-        {"type": "csv_file", "label": "Results CSV"},
+        {"type": "csv_file", "label": "Results CSV" },
         {"type": "chart", "chartType": "bar", "label": "Results by Category"},
         {"type": "chart", "chartType": "pie", "label": "Share by Type"},
     ],
@@ -417,11 +417,3 @@ print(json.dumps([{
 
 sys.exit(0)
 ```
-
-## Reference Examples
-
-See `powers/examples/` for complete working scripts:
-
-- `lines-of-codes/script.js` — uses an external CLI tool (`cloc`), emits progress, outputs CSV
-- `list-folders/script.js` — recursive directory traversal, boolean input, outputs CSV
-- `list-folder-size/script.js` — disk usage analysis, outputs CSV
