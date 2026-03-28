@@ -111,4 +111,4 @@ const categoryIndex = [...categories.entries()].map(([slug, { label, scripts }])
 
 const indexPath = path.join(MARKETPLACE_DIR, 'marketplace.json');
 fs.writeFileSync(indexPath, JSON.stringify({ categories: categoryIndex }, null, 2) + '\n');
-console.log(`  [ok] marketplace/marketplace.json  (${categoryIndex.length} category/categories)`);
+console.log(`  [ok] marketplace/marketplace.json  (${categoryIndex.length} categories)`);

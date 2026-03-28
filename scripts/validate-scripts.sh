@@ -16,18 +16,19 @@ failed=0
 validate_output() {
   local output="$1"
   local validation
+  local val_exit=0
   validation=$(node -e "
     try {
       const d = JSON.parse(process.argv[1]);
       if (!d.name) { console.error('Missing required field: name'); process.exit(1); }
+      if (!d.category) { console.error('Missing required field: category'); process.exit(1); }
       if (!d.description) { console.error('Missing required field: description'); process.exit(1); }
       console.log('OK: ' + d.name);
     } catch (e) {
       console.error('Invalid JSON: ' + e.message);
       process.exit(1);
     }
-  " "$output" 2>&1)
-  local val_exit=$?
+  " "$output" 2>&1) || val_exit=$?
   echo "$validation"
   return $val_exit
 }
@@ -41,12 +42,13 @@ for script in "$@"; do
 
   echo "--- Checking: $script"
 
+  output=''
+  exit_code=0
   if [[ "$script" == *.js ]]; then
-    output=$(node "$script" --superpowers=describe 2>&1)
+    output=$(node "$script" --superpowers=describe 2>&1) || exit_code=$?
   elif [[ "$script" == *.py ]]; then
-    output=$(python3 "$script" --superpowers describe 2>&1)
+    output=$(python3 "$script" --superpowers describe 2>&1) || exit_code=$?
   fi
-  exit_code=$?
 
   if [ $exit_code -ne 0 ]; then
     echo "FAIL: script exited with code $exit_code"

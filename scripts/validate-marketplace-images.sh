@@ -67,18 +67,17 @@ if [ $# -eq 0 ]; then
   done < <(find "$ROOT" -type f \( -name "script.js" -o -name "script.py" \) -exec dirname {} \; | sort -u)
 else
   # Args are script file paths — deduplicate their parent directories
-  declare -A seen
-  for f in "$@"; do
-    basename_f=$(basename "$f")
-    if [[ "$basename_f" != "script.js" && "$basename_f" != "script.py" ]]; then
-      continue
-    fi
-    dir=$(dirname "$f")
-    if [[ -z "${seen[$dir]+x}" ]]; then
-      seen[$dir]=1
-      check_dir "$dir"
-    fi
-  done
+  while IFS= read -r dir; do
+    check_dir "$dir"
+  done < <(
+    for f in "$@"; do
+      basename_f=$(basename "$f")
+      if [[ "$basename_f" != "script.js" && "$basename_f" != "script.py" ]]; then
+        continue
+      fi
+      dirname "$f"
+    done | sort -u
+  )
 fi
 
 echo ""
@@ -87,13 +86,6 @@ if [ $checked -eq 0 ]; then
   echo "No scripts found."
   exit 0
 fi
-
-if [ $failed -ne 0 ]; then
-  echo "One or more scripts are missing a valid marketplace.png."
-  exit 1
-fi
-
-echo "All $checked script folder(s) have a valid marketplace.png (${REQUIRED_WIDTH}x${REQUIRED_HEIGHT})."
 
 if [ $failed -ne 0 ]; then
   echo "One or more scripts are missing a valid marketplace.png."

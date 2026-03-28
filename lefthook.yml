@@ -15,6 +15,7 @@ pre-commit:
     - name: generate-manifests
       glob: 'powers/**/script.{js,py}'
       run: |
+        set -euo pipefail
         for f in {staged_files}; do
           dir=$(dirname "$f")
           if [[ "$f" == *.js ]]; then
