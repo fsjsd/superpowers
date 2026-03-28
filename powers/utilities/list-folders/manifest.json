@@ -1,0 +1,35 @@
+{
+  "name": "List Folders",
+  "description": "Recursively lists all subfolders in a given folder and exports the results as a CSV.",
+  "category": "Utilities",
+  "requirements": "Node v18+",
+  "icon": "folder-tree",
+  "input_schema": [
+    {
+      "name": "folder",
+      "type": "folderpath",
+      "label": "Folder",
+      "description": "The folder to list subfolders from",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "recursive",
+      "type": "boolean",
+      "label": "Recursive",
+      "description": "Whether to list folders in subdirectories",
+      "required": false,
+      "default": "true"
+    }
+  ],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        { "name": "total", "label": "Total folders", "type": "number" },
+        { "name": "finished", "label": "Folders processed", "type": "number" }
+      ]
+    }
+  ],
+  "output_schema": [{ "type": "csv_file", "label": "Folder listing CSV" }]
+}

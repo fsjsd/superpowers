@@ -1,0 +1,27 @@
+{
+  "name": "List Folder Sizes",
+  "description": "Shows the size of each top-level subfolder within a given directory.",
+  "category": "Utilities",
+  "requirements": "Node v18+",
+  "icon": "folder-open",
+  "input_schema": [
+    {
+      "name": "folder",
+      "type": "folderpath",
+      "label": "Target Folder",
+      "description": "The folder whose top-level subfolders will be measured.",
+      "required": true,
+      "default": ""
+    }
+  ],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        { "name": "total", "label": "Total subfolders", "type": "number" },
+        { "name": "finished", "label": "Subfolders scanned", "type": "number" }
+      ]
+    }
+  ],
+  "output_schema": [{ "type": "csv_file", "label": "Folder sizes CSV" }]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Anthropic Daily Costs",
+  "description": "Retrieves Anthropic API spending on a daily basis for a configurable number of days.",
+  "category": "Financial",
+  "requirements": "Node v18+",
+  "icon": "bot",
+  "input_schema": [
+    {
+      "name": "ANTHROPIC_ADMIN_API_KEY",
+      "type": "env_var",
+      "label": "Anthropic Admin API key env var name",
+      "description": "Anthropic Admin API key is required to access cost report endpoints. \n\nYou'll need to create an Organization and Team (free) to create an Admin API key.\n      \nCreate one at https://console.anthropic.com/account/api-keys",
+      "required": true,
+      "default": "ANTHROPIC_ADMIN_API_KEY"
+    },
+    {
+      "name": "days",
+      "type": "number",
+      "label": "Number of days",
+      "description": "How many past days to retrieve costs for (max 31)",
+      "required": false,
+      "default": "7"
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "metric",
+      "label": "Total Cost",
+      "format": { "type": "currency", "currency": "USD" }
+    },
+    { "type": "chart", "chartType": "bar", "label": "Daily Costs (USD)" }
+  ]
+}
