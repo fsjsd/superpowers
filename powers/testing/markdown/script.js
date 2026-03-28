@@ -4,7 +4,7 @@ const path = require('path');
 const os = require('os');
 
 const descriptor = {
-  name: 'Dummy Markdown Output',
+  name: 'Demo - Markdown response',
   description: 'Returns dummy markdown content to test the markdown output schema type.',
   category: 'Testing',
   requirements: 'Node v18+',

@@ -4,7 +4,7 @@ const path = require('path');
 const os = require('os');
 
 const descriptor = {
-  name: 'Dummy Data — All Types',
+  name: 'Demo - CSV data',
   description: 'Returns dummy csv_file data covering every supported data type for testing.',
   category: 'Testing',
   requirements: 'Node v18+',

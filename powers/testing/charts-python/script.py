@@ -3,7 +3,7 @@ import json
 import random
 
 descriptor = {
-    "name": "Dummy Chart Data - Python",
+    "name": "Demo - Charts (Python)",
     "description": "Returns randomised dummy data for all supported chart types.",
     "category": "Testing",
     "requirements": "Python 3.8+",
