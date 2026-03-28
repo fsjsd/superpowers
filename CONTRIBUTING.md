@@ -1,6 +1,6 @@
 # Contributing to Superpowers
 
-Thanks for contributing! This repo is a collection of offical scripts that run inside the [Super Powers app](https://superpowe.rs).
+Thanks for contributing! This repo is a collection of official scripts that run inside the [Super Powers app](https://superpowe.rs).
 
 ---
 
