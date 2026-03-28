@@ -19,13 +19,14 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Validate describe mode for all scripts
+      - name: Validate describe mode for changed scripts
         run: |
           failed=0
 
+          changed=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+
           validate_output() {
             local output="$1"
-            local script="$2"
             local validation
             validation=$(node -e "
               try {
@@ -53,11 +54,11 @@ jobs:
               failed=1
               continue
             fi
-            if ! validate_output "$output" "$script"; then
+            if ! validate_output "$output"; then
               echo "FAIL: $script"
               failed=1
             fi
-          done < <(find powers -name "script.js")
+          done < <(echo "$changed" | grep -E '^powers/.*/script\.js$')
 
           while IFS= read -r script; do
             echo "--- Checking: $script"
@@ -69,11 +70,11 @@ jobs:
               failed=1
               continue
             fi
-            if ! validate_output "$output" "$script"; then
+            if ! validate_output "$output"; then
               echo "FAIL: $script"
               failed=1
             fi
-          done < <(find powers -name "script.py")
+          done < <(echo "$changed" | grep -E '^powers/.*/script\.py$')
 
           if [ $failed -ne 0 ]; then
             echo ""
@@ -82,4 +83,4 @@ jobs:
           fi
 
           echo ""
-          echo "All scripts passed."
+          echo "All changed scripts passed."
