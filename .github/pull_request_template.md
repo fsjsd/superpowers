@@ -17,3 +17,4 @@
 - [ ] `author` field included in the descriptor
 - [ ] Attach a _video demo_ of the script in use (Youtube link fine)
 - [ ] Marketplace PNG image. 1200x896
+- [ ] Test Instructions: If we can't test it, we can't approve it
