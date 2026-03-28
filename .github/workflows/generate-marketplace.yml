@@ -33,3 +33,9 @@ jobs:
           aws s3 sync marketplace/ s3://superpowers-cdn/marketplace/ \
             --delete \
             --exact-timestamps
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id E3L91WCMRBKHSC \
+            --paths "/*"
