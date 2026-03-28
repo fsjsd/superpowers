@@ -28,5 +28,7 @@
       "label": "Dummy data CSV"
     }
   ],
-  "files": ["script.js"]
+  "files": [
+    "script.js"
+  ]
 }
