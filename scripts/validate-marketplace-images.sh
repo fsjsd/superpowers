@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# Usage: validate-marketplace-images.sh [dir]
-# Validates that every script.js / script.py under powers/ has a sibling
+# Usage:
+#   validate-marketplace-images.sh                       # scan all of powers/
+#   validate-marketplace-images.sh <script> [<script>…]  # check specific script files
+#
+# Validates that every script.js / script.py folder has a sibling
 # marketplace.png with dimensions 1200x896.
-# Defaults to searching the 'powers' directory relative to the script's location.
 
 set -euo pipefail
 
 REQUIRED_WIDTH=1200
 REQUIRED_HEIGHT=896
-ROOT="${1:-$(dirname "$0")/../powers}"
 
 failed=0
 checked=0
@@ -34,8 +35,9 @@ png_dimensions() {
   " "$file"
 }
 
-while IFS= read -r dir; do
-  image="$dir/marketplace.png"
+check_dir() {
+  local dir="$1"
+  local image="$dir/marketplace.png"
   checked=$((checked + 1))
 
   echo "--- Checking: $dir"
@@ -43,15 +45,11 @@ while IFS= read -r dir; do
   if [ ! -f "$image" ]; then
     echo "FAIL: missing marketplace.png"
     failed=1
-    continue
+    return
   fi
 
-  dims=$(png_dimensions "$image" 2>&1)
-  if [ $? -ne 0 ]; then
-    echo "FAIL: marketplace.png — $dims"
-    failed=1
-    continue
-  fi
+  local dims
+  dims=$(png_dimensions "$image" 2>&1) || { echo "FAIL: marketplace.png — $dims"; failed=1; return; }
 
   if [ "$dims" != "${REQUIRED_WIDTH}x${REQUIRED_HEIGHT}" ]; then
     echo "FAIL: marketplace.png — expected ${REQUIRED_WIDTH}x${REQUIRED_HEIGHT}, got $dims"
@@ -59,14 +57,43 @@ while IFS= read -r dir; do
   else
     echo "OK: marketplace.png ${dims}"
   fi
-done < <(find "$ROOT" -type f \( -name "script.js" -o -name "script.py" \) -exec dirname {} \; | sort -u)
+}
+
+if [ $# -eq 0 ]; then
+  # No args — scan all of powers/
+  ROOT="$(dirname "$0")/../powers"
+  while IFS= read -r dir; do
+    check_dir "$dir"
+  done < <(find "$ROOT" -type f \( -name "script.js" -o -name "script.py" \) -exec dirname {} \; | sort -u)
+else
+  # Args are script file paths — deduplicate their parent directories
+  declare -A seen
+  for f in "$@"; do
+    basename_f=$(basename "$f")
+    if [[ "$basename_f" != "script.js" && "$basename_f" != "script.py" ]]; then
+      continue
+    fi
+    dir=$(dirname "$f")
+    if [[ -z "${seen[$dir]+x}" ]]; then
+      seen[$dir]=1
+      check_dir "$dir"
+    fi
+  done
+fi
 
 echo ""
 
 if [ $checked -eq 0 ]; then
-  echo "No scripts found under $ROOT"
+  echo "No scripts found."
   exit 0
 fi
+
+if [ $failed -ne 0 ]; then
+  echo "One or more scripts are missing a valid marketplace.png."
+  exit 1
+fi
+
+echo "All $checked script folder(s) have a valid marketplace.png (${REQUIRED_WIDTH}x${REQUIRED_HEIGHT})."
 
 if [ $failed -ne 0 ]; then
   echo "One or more scripts are missing a valid marketplace.png."

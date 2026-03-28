@@ -30,3 +30,13 @@ jobs:
             exit 0
           fi
           bash scripts/validate-scripts.sh $scripts
+
+      - name: Validate marketplace images for changed scripts
+        run: |
+          changed=$(git diff --name-only ${{ github.event.pull_request.base.sha }}...HEAD)
+          scripts=$(echo "$changed" | grep -E '^powers/.*/script\.(js|py)$' || true)
+          if [ -z "$scripts" ]; then
+            echo "No script files changed."
+            exit 0
+          fi
+          bash scripts/validate-marketplace-images.sh $scripts

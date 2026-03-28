@@ -8,6 +8,10 @@ pre-commit:
       glob: 'powers/**/script.{js,py}'
       run: bash scripts/validate-scripts.sh {staged_files}
 
+    - name: validate-marketplace-images
+      glob: 'powers/**/script.{js,py}'
+      run: bash scripts/validate-marketplace-images.sh {staged_files}
+
     - name: generate-manifests
       glob: 'powers/**/script.{js,py}'
       run: |
