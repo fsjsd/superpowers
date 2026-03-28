@@ -18,10 +18,24 @@
     {
       "type": "progress",
       "payload_schema": [
-        { "name": "total", "label": "Total subfolders", "type": "number" },
-        { "name": "finished", "label": "Subfolders scanned", "type": "number" }
+        {
+          "name": "total",
+          "label": "Total subfolders",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Subfolders scanned",
+          "type": "number"
+        }
       ]
     }
   ],
-  "output_schema": [{ "type": "csv_file", "label": "Folder sizes CSV" }]
+  "output_schema": [
+    {
+      "type": "csv_file",
+      "label": "Folder sizes CSV"
+    }
+  ],
+  "files": ["script.js"]
 }

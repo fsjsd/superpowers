@@ -26,10 +26,24 @@
     {
       "type": "progress",
       "payload_schema": [
-        { "name": "total", "label": "Total folders", "type": "number" },
-        { "name": "finished", "label": "Folders processed", "type": "number" }
+        {
+          "name": "total",
+          "label": "Total folders",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Folders processed",
+          "type": "number"
+        }
       ]
     }
   ],
-  "output_schema": [{ "type": "csv_file", "label": "Folder listing CSV" }]
+  "output_schema": [
+    {
+      "type": "csv_file",
+      "label": "Folder listing CSV"
+    }
+  ],
+  "files": ["script.js"]
 }

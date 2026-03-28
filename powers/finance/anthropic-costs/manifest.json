@@ -26,8 +26,16 @@
     {
       "type": "metric",
       "label": "Total Cost",
-      "format": { "type": "currency", "currency": "USD" }
+      "format": {
+        "type": "currency",
+        "currency": "USD"
+      }
     },
-    { "type": "chart", "chartType": "bar", "label": "Daily Costs (USD)" }
-  ]
+    {
+      "type": "chart",
+      "chartType": "bar",
+      "label": "Daily Costs (USD)"
+    }
+  ],
+  "files": ["script.js"]
 }
