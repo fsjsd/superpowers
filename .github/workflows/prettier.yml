@@ -1,0 +1,40 @@
+name: Prettier
+
+on:
+  pull_request:
+    paths:
+      - '**/*.js'
+      - '**/*.mjs'
+      - '**/*.cjs'
+      - '**/*.json'
+      - '**/*.md'
+      - '**/*.yml'
+      - '**/*.yaml'
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting of changed files
+        run: |
+          changed=$(git diff --name-only ${{ github.event.pull_request.base.sha }}...HEAD)
+          files=$(echo "$changed" | grep -E '\.(js|mjs|cjs|json|md|yml|yaml)$' || true)
+          if [ -z "$files" ]; then
+            echo "No formattable files changed."
+            exit 0
+          fi
+          pnpm exec prettier --check $files
