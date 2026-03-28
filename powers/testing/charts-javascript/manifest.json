@@ -1,5 +1,5 @@
 {
-  "name": "Demo - Charts (Javascript)",
+  "name": "Demo - Charts (JavaScript)",
   "description": "Returns randomised dummy data for all supported chart types.",
   "category": "Testing",
   "requirements": "Node v18+",
