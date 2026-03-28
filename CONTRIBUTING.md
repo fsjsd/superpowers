@@ -58,10 +58,11 @@ Your script must implement two modes:
 
 ### 1. Describe mode
 
-When called with `--superpowers=describe`, print a single JSON descriptor to stdout and exit 0. **No other output.**
+When called with `--superpowers=describe` (typical for Node/JS) or `--superpowers describe` (typical for Python), print a single JSON descriptor to stdout and exit 0. **No other output.**
 
 ```js
 node script.js --superpowers=describe
+python script.py --superpowers describe
 ```
 
 The descriptor shape:
