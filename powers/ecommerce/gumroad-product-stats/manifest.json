@@ -39,7 +39,17 @@
         "type": "number",
         "decimals": 0
       }
+    },
+    {
+      "type": "metric",
+      "label": "Total Revenue (USD)",
+      "format": {
+        "type": "number",
+        "decimals": 2
+      }
     }
   ],
-  "files": ["script.js"]
+  "files": [
+    "script.js"
+  ]
 }

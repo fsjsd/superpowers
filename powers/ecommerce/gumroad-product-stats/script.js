@@ -32,6 +32,7 @@ const descriptor = {
     { type: 'csv_file', label: 'Products CSV' },
     { type: 'chart', chartType: 'bar', label: 'Revenue by Product (USD)' },
     { type: 'metric', label: 'Total Products', format: { type: 'number', decimals: 0 } },
+    { type: 'metric', label: 'Total Revenue (USD)', format: { type: 'number', decimals: 2 } },
   ],
 };
 
@@ -132,7 +133,7 @@ async function main() {
       escapeCsv(p.published),
       escapeCsv(p.deleted),
       escapeCsv(p.sales_count),
-      escapeCsv(p.sales_usd_cents),
+      escapeCsv(p.sales_usd_cents ? (p.sales_usd_cents / 100).toFixed(2) : ''),
       escapeCsv(p.short_url),
       //escapeCsv(Array.isArray(p.tags) ? p.tags.join(';') : p.tags),
       //escapeCsv(p.description),
@@ -153,9 +154,22 @@ async function main() {
   chartData.sort((a, b) => b.revenue_usd - a.revenue_usd);
 
   const totalProducts = products.length;
+  const totalRevenueUsd = products.reduce(
+    (sum, p) => sum + (p.sales_usd_cents ? Number(p.sales_usd_cents) / 100 : 0),
+    0,
+  );
 
   process.stdout.write(
     JSON.stringify([
+      {
+        event: 'output',
+        payload: {
+          type: 'metric',
+          label: 'Total Revenue (USD)',
+          value: parseFloat(totalRevenueUsd.toFixed(2)),
+          format: { type: 'currency', currency: 'USD' },
+        },
+      },
       {
         event: 'output',
         payload: { path: csvPath, type: 'csv_file', label: 'Products CSV' },
