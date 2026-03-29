@@ -36,5 +36,7 @@
       "label": "Pie Chart"
     }
   ],
-  "files": ["script.js"]
+  "files": [
+    "script.js"
+  ]
 }

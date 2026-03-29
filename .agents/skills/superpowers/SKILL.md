@@ -40,7 +40,7 @@ Do not infer or add extra outputs. Only implement what was explicitly confirmed.
       "type": "folderpath | filepath | text | boolean | number | select | env_var",
       "label": "Human-readable label",
       "description": "Optional helper text",
-      "required": true,
+      "required": true | false,
       "default": "",
       "options": ["only for select type"]
     }
@@ -59,6 +59,7 @@ Do not infer or add extra outputs. Only implement what was explicitly confirmed.
     {
       "type": "chart",
       "chartType": "bar | line | area | pie",
+      "stacked": true | false, // optional, only for bar/area
       "label": "Human-readable chart label"
     },
     {
