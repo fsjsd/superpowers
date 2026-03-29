@@ -1,0 +1,95 @@
+{
+  "name": "Audio to MP3 Converter",
+  "description": "Batch convert audio files to MP3 using FFmpeg with configurable bitrate, mode and encoding settings.",
+  "category": "Media",
+  "requirements": "Node v18+, ffmpeg and ffprobe installed (brew install ffmpeg)",
+  "author": "superpowers",
+  "icon": "music",
+  "input_schema": [
+    {
+      "name": "input-folder",
+      "type": "folderpath",
+      "label": "Input Folder",
+      "description": "Folder containing audio files to convert",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "output-folder",
+      "type": "folderpath",
+      "label": "Output Folder",
+      "description": "Where to save the converted MP3 files (leave empty to save alongside originals)",
+      "required": false,
+      "default": ""
+    },
+    {
+      "name": "encoding-mode",
+      "type": "select",
+      "label": "Encoding Mode",
+      "description": "CBR produces a fixed bitrate for predictable file sizes. VBR adjusts bitrate per-frame for better quality-to-size efficiency.",
+      "required": false,
+      "default": "CBR",
+      "options": ["CBR", "VBR"]
+    },
+    {
+      "name": "bitrate",
+      "type": "select",
+      "label": "Bitrate (CBR mode)",
+      "description": "Target bitrate used in CBR mode. Ignored when VBR is selected.",
+      "required": false,
+      "default": "192k",
+      "options": ["64k", "96k", "128k", "192k", "256k", "320k"]
+    },
+    {
+      "name": "vbr-quality",
+      "type": "select",
+      "label": "VBR Quality",
+      "description": "Quality level used in VBR mode (0 = highest quality / largest files, 9 = smallest files / lowest quality). V4 is a good general-purpose default. Ignored when CBR is selected.",
+      "required": false,
+      "default": "4",
+      "options": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    },
+    {
+      "name": "sample-rate",
+      "type": "select",
+      "label": "Sample Rate",
+      "description": "Output audio sample rate. \"original\" keeps the source rate unchanged.",
+      "required": false,
+      "default": "original",
+      "options": ["original", "22050", "44100", "48000"]
+    },
+    {
+      "name": "channels",
+      "type": "select",
+      "label": "Channels",
+      "description": "Output channel layout. \"original\" preserves the source channel count.",
+      "required": false,
+      "default": "original",
+      "options": ["original", "mono", "stereo"]
+    }
+  ],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        {
+          "name": "total",
+          "label": "Total duration (seconds)",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Seconds encoded",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "media",
+      "label": "Converted MP3 File"
+    }
+  ],
+  "files": ["script.js"]
+}

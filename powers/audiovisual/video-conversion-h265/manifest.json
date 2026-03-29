@@ -1,0 +1,122 @@
+{
+  "name": "Batch H.265 Video Converter",
+  "description": "Batch convert video files to H.265/HEVC using FFmpeg with configurable quality and encoding settings.",
+  "category": "Media",
+  "requirements": "Node v18+, ffmpeg and ffprobe installed (brew install ffmpeg)",
+  "author": "superpowers",
+  "icon": "video",
+  "input_schema": [
+    {
+      "name": "input-folder",
+      "type": "folderpath",
+      "label": "Input Folder",
+      "description": "Folder containing video files to convert",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "output-folder",
+      "type": "folderpath",
+      "label": "Output Folder",
+      "description": "Where to save converted files (leave empty to save alongside originals)",
+      "required": false,
+      "default": ""
+    },
+    {
+      "name": "crf",
+      "type": "number",
+      "label": "Quality (CRF)",
+      "description": "Constant Rate Factor: 0 = lossless, 28 = default, 51 = worst. Lower = better quality & larger file.",
+      "required": false,
+      "default": "28"
+    },
+    {
+      "name": "preset",
+      "type": "select",
+      "label": "Encoding Preset",
+      "description": "Slower presets achieve better compression but take longer to encode.",
+      "required": false,
+      "default": "medium",
+      "options": [
+        "ultrafast",
+        "superfast",
+        "veryfast",
+        "faster",
+        "fast",
+        "medium",
+        "slow",
+        "slower",
+        "veryslow"
+      ]
+    },
+    {
+      "name": "tune",
+      "type": "select",
+      "label": "Tune",
+      "description": "Optimise encoding for a specific type of content.",
+      "required": false,
+      "default": "none",
+      "options": ["none", "grain", "animation", "zerolatency", "fastdecode"]
+    },
+    {
+      "name": "audio",
+      "type": "select",
+      "label": "Audio Codec",
+      "description": "\"copy\" remuxes audio without re-encoding (fast, lossless). \"aac\" or \"mp3\" re-encode audio.",
+      "required": false,
+      "default": "copy",
+      "options": ["copy", "aac", "mp3"]
+    },
+    {
+      "name": "audio-bitrate",
+      "type": "select",
+      "label": "Audio Bitrate",
+      "description": "Only applies when audio is re-encoded (not when using \"copy\").",
+      "required": false,
+      "default": "192k",
+      "options": ["96k", "128k", "192k", "256k", "320k"]
+    },
+    {
+      "name": "container",
+      "type": "select",
+      "label": "Output Container",
+      "description": "MP4 is broadly compatible; MKV supports more codec/subtitle combinations.",
+      "required": false,
+      "default": "mp4",
+      "options": ["mp4", "mkv"]
+    },
+    {
+      "name": "hw-accel",
+      "type": "select",
+      "label": "Hardware Acceleration",
+      "description": "\"videotoolbox\" uses Apple GPU on macOS (faster, slightly lower quality). \"none\" uses CPU.",
+      "required": false,
+      "default": "none",
+      "options": ["none", "videotoolbox"]
+    }
+  ],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        {
+          "name": "total",
+          "label": "Total duration (seconds)",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Seconds encoded",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "media",
+      "label": "Converted H.265 Video"
+    }
+  ],
+  "files": ["script.js"]
+}
