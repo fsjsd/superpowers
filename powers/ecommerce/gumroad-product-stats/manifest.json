@@ -49,7 +49,5 @@
       }
     }
   ],
-  "files": [
-    "script.js"
-  ]
+  "files": ["script.js"]
 }
