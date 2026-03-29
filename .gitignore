@@ -11,3 +11,6 @@ venv
 dist
 
 marketplace/*
+
+# Skill eval workspaces (generated run outputs, not for distribution)
+.agents/skills/*-workspace/

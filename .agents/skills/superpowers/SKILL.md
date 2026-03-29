@@ -9,12 +9,12 @@ Scripts run inside the **Super Powers** Electron app. They must conform to the p
 
 ## ⛔ STOP — Ask Before Writing
 
-NEVER write a script until you have confirmed with the user:
+Do not write a script until you have confirmed with the user:
 
 1. **What outputs they want** — list only from: `csv_file`, `media`, `html`, `markdown`, `chart`, `metric`
 2. **What inputs are required** — only ask if non-obvious
 
-Do not infer or add extra outputs. Only implement what was explicitly confirmed.
+The app's output renderer is driven by the `output_schema` declaration — it only knows how to display types that are declared. Adding undeclared output types silently fails in the UI. Confirming up front ensures you implement exactly what the user asked for and nothing they didn't.
 
 ## Rules
 
@@ -22,7 +22,7 @@ Do not infer or add extra outputs. Only implement what was explicitly confirmed.
 2. **Run mode** — Inputs are passed as `--name=value` CLI args matching `input_schema[].name`.
 3. **Structured events** — Emit newline-delimited JSON on stdout. Any non-JSON line is treated as a plain log message. Emit structured events with the shape `[{ event: string, payload: object }]` for Super Powers to consume. See "Event Shapes" below.
 4. **Exit codes** — `0` on success. Non-zero on failure with a descriptive message on stderr.
-5. **Language** — Use Node.js (CommonJS `require()`) unless the task specifically requires Python. Do not use ESM (`import`).
+5. **Language** — Use Node.js (CommonJS `require()`) unless the task specifically requires Python. Do not use ESM (`import`) — scripts run in an isolated Node.js worker process that uses CommonJS module resolution; ESM imports will fail at runtime.
 
 ## Descriptor Shape
 
@@ -118,12 +118,12 @@ process.stdout.write(
 
 ### Chart data shapes by type
 
-| chartType | `data` row shape                             | `nameKey`       | `dataKeys`                 |
-| --------- | -------------------------------------------- | --------------- | -------------------------- |
-| `bar`     | `{ [nameKey]: string, [series]: number, … }` | X-axis category | One or more numeric series |
-| `line`    | `{ [nameKey]: string, [series]: number, … }` | X-axis category | One or more numeric series |
-| `area`    | `{ [nameKey]: string, [series]: number, … }` | X-axis category | One or more numeric series |
-| `pie`     | `{ [nameKey]: string, value: number }`       | Slice label     | Always `["value"]`         |
+| chartType | `data` row shape                             | `nameKey`       | `dataKeys`                 | `stacked`               |
+| --------- | -------------------------------------------- | --------------- | -------------------------- | ----------------------- |
+| `bar`     | `{ [nameKey]: string, [series]: number, … }` | X-axis category | One or more numeric series | optional `true`/`false` |
+| `line`    | `{ [nameKey]: string, [series]: number, … }` | X-axis category | One or more numeric series | —                       |
+| `area`    | `{ [nameKey]: string, [series]: number, … }` | X-axis category | One or more numeric series | optional `true`/`false` |
+| `pie`     | `{ [nameKey]: string, value: number }`       | Slice label     | Always `["value"]`         | —                       |
 
 > **Pie charts** always use `value` as the numeric field. Set `dataKeys: ['value']` by convention.
 
@@ -213,12 +213,7 @@ const descriptor = {
       ],
     },
   ],
-  // ⚠️ BOILERPLATE ONLY — delete output types not confirmed with the user
-  output_schema: [
-    { type: 'csv_file', label: 'Results CSV' }, // ← keep only what was asked for
-    { type: 'chart', chartType: 'bar', label: 'Results by Category' }, // ← keep only what was asked for
-    { type: 'chart', chartType: 'pie', label: 'Share by Type' }, // ← keep only what was asked for
-  ],
+  output_schema: [], // ← fill in only the outputs confirmed with the user
 };
 
 const args = process.argv.slice(2);
@@ -336,18 +331,12 @@ descriptor = {
             {"name": "finished", "label": "Finished", "type": "number"},
         ]},
     ],
-    "output_schema": [
-        {"type": "csv_file", "label": "Results CSV" },
-        {"type": "chart", "chartType": "bar", "label": "Results by Category"},
-        {"type": "chart", "chartType": "pie", "label": "Share by Type"},
-    ],
+    "output_schema": [],  # ← fill in only the outputs confirmed with the user
 }
 
-if '--superpowers' in sys.argv:
-    idx = sys.argv.index('--superpowers')
-    if idx + 1 < len(sys.argv) and sys.argv[idx + 1] == 'describe':
-        print(json.dumps(descriptor))
-        sys.exit(0)
+if '--superpowers=describe' in sys.argv:
+    print(json.dumps(descriptor))
+    sys.exit(0)
 
 # Parse --name=value args
 params = {}
