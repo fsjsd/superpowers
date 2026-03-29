@@ -30,7 +30,9 @@ if (args.includes('--superpowers=describe')) {
 
 // ── Dummy data covering every CSV data type ───────────────────────────────────
 // Columns: string, integer, float, boolean, date (ISO), datetime (ISO),
-//          nullable (some nulls), currency amount, percent, url, email, json_blob
+//          nullable (some nulls), currency amount, percent, url, email, json_blob,
+//          folder_path (runtime cwd)
+const cwd = process.cwd();
 const rows = [
   {
     id: 1,
@@ -47,6 +49,7 @@ const rows = [
     email: 'alpha@example.com',
     json_blob: '{"key":"value","num":1}',
     category: 'A',
+    folder_path: cwd,
   },
   {
     id: 2,
@@ -63,6 +66,7 @@ const rows = [
     email: 'beta@example.com',
     json_blob: '{"key":"other","num":2}',
     category: 'B',
+    folder_path: cwd,
   },
   {
     id: 3,
@@ -79,6 +83,7 @@ const rows = [
     email: 'gamma@example.com',
     json_blob: '{}',
     category: 'A',
+    folder_path: cwd,
   },
   {
     id: 4,
@@ -95,6 +100,7 @@ const rows = [
     email: 'delta+tag@example.com',
     json_blob: '{"arr":[1,2,3],"nested":{"x":true}}',
     category: 'C',
+    folder_path: cwd,
   },
   {
     id: 5,
@@ -111,6 +117,7 @@ const rows = [
     email: 'epsilon@example.com',
     json_blob: '{"flag":false}',
     category: 'B',
+    folder_path: cwd,
   },
 ];
 
@@ -145,6 +152,7 @@ const headers = [
   'email',
   'json_blob',
   'category',
+  'folder_path',
 ];
 
 const csvLines = [headers.join(',')];

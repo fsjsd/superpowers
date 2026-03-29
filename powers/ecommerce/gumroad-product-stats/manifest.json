@@ -1,0 +1,53 @@
+{
+  "name": "Gumroad Product Stats",
+  "description": "Downloads all product data from your Gumroad account and shows a revenue chart.",
+  "category": "eCommerce",
+  "requirements": "Node v18+",
+  "icon": "shopping-bag",
+  "input_schema": [
+    {
+      "name": "GUMROAD_ACCESS_TOKEN",
+      "type": "env_var",
+      "label": "Gumroad access token env var name",
+      "description": "Name of the environment variable holding your Gumroad API access token",
+      "required": true,
+      "default": "GUMROAD_ACCESS_TOKEN"
+    },
+    {
+      "name": "published_only",
+      "type": "boolean",
+      "label": "Published only",
+      "description": "When true, only include published products. When false, include all products.",
+      "required": false,
+      "default": "true"
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "csv_file",
+      "label": "Products CSV"
+    },
+    {
+      "type": "chart",
+      "chartType": "bar",
+      "label": "Revenue by Product (USD)"
+    },
+    {
+      "type": "metric",
+      "label": "Total Products",
+      "format": {
+        "type": "number",
+        "decimals": 0
+      }
+    },
+    {
+      "type": "metric",
+      "label": "Total Revenue (USD)",
+      "format": {
+        "type": "number",
+        "decimals": 2
+      }
+    }
+  ],
+  "files": ["script.js"]
+}

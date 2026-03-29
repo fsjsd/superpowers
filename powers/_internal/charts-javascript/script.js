@@ -118,6 +118,23 @@ process.stdout.write(
   ]) + '\n',
 );
 
+process.stdout.write(
+  JSON.stringify([
+    {
+      event: 'output',
+      payload: {
+        type: 'chart',
+        chartType: 'area',
+        title: 'Downloads & Uploads (Area, stacked)',
+        nameKey: 'week',
+        dataKeys: ['downloads', 'uploads'],
+        data: areaData,
+        stacked: true,
+      },
+    },
+  ]) + '\n',
+);
+
 // ── Pie chart ────────────────────────────────────────────────────────────────
 const CATEGORIES = [
   'Electronics',

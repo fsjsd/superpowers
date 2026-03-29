@@ -1,0 +1,108 @@
+{
+  "name": "Demo - Metrics",
+  "description": "Emits one metric for every supported format type: currency (USD/AUD/EUR), date (short/medium/long), percent, and number.",
+  "category": "Testing",
+  "requirements": "Node v18+",
+  "icon": "gauge",
+  "input_schema": [],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        {
+          "name": "total",
+          "label": "Total metrics",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Metrics emitted",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "metric",
+      "label": "USD Revenue",
+      "format": {
+        "type": "currency",
+        "currency": "USD"
+      }
+    },
+    {
+      "type": "metric",
+      "label": "AUD Revenue",
+      "format": {
+        "type": "currency",
+        "currency": "AUD"
+      }
+    },
+    {
+      "type": "metric",
+      "label": "EUR Revenue",
+      "format": {
+        "type": "currency",
+        "currency": "EUR"
+      }
+    },
+    {
+      "type": "metric",
+      "label": "Start Date (short)",
+      "format": {
+        "type": "date",
+        "style": "short"
+      }
+    },
+    {
+      "type": "metric",
+      "label": "Start Date (medium)",
+      "format": {
+        "type": "date",
+        "style": "medium"
+      }
+    },
+    {
+      "type": "metric",
+      "label": "Start Date (long)",
+      "format": {
+        "type": "date",
+        "style": "long"
+      }
+    },
+    {
+      "type": "metric",
+      "label": "Conversion Rate",
+      "format": {
+        "type": "percent",
+        "decimals": 1
+      }
+    },
+    {
+      "type": "metric",
+      "label": "Win Rate",
+      "format": {
+        "type": "percent",
+        "decimals": 2
+      }
+    },
+    {
+      "type": "metric",
+      "label": "Total Users",
+      "format": {
+        "type": "number",
+        "decimals": 0
+      }
+    },
+    {
+      "type": "metric",
+      "label": "Avg Score",
+      "format": {
+        "type": "number",
+        "decimals": 2
+      }
+    }
+  ],
+  "files": ["script.js"]
+}

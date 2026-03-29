@@ -1,0 +1,57 @@
+{
+  "name": "AWS Monthly Costs by Service",
+  "description": "Retrieves a breakdown of monthly AWS costs stacked by service. Requires AWS API credentials with permission to access Cost Explorer. (IAM policy with AWSBillingReadOnlyAccess / ce:GetCostAndUsage permission)",
+  "category": "SaaS",
+  "requirements": "Node v18+",
+  "icon": "cloud",
+  "input_schema": [
+    {
+      "name": "AWS_ACCESS_KEY_ID",
+      "type": "env_var",
+      "label": "AWS Access Key ID env var name",
+      "description": "Name of the environment variable holding your AWS Access Key ID.",
+      "required": true,
+      "default": "AWS_ACCESS_KEY_ID"
+    },
+    {
+      "name": "AWS_SECRET_ACCESS_KEY",
+      "type": "env_var",
+      "label": "AWS Secret Access Key env var name",
+      "description": "Name of the environment variable holding your AWS Secret Access Key.",
+      "required": true,
+      "default": "AWS_SECRET_ACCESS_KEY"
+    },
+    {
+      "name": "region",
+      "type": "text",
+      "label": "AWS Region",
+      "description": "AWS region used to scope cost data (e.g. us-east-1). Note: Cost Explorer is a global service — the endpoint is always us-east-1.",
+      "required": false,
+      "default": "us-east-1"
+    },
+    {
+      "name": "months",
+      "type": "number",
+      "label": "Months to retrieve",
+      "description": "Number of past months to include (1–12).",
+      "required": false,
+      "default": "6"
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "metric",
+      "label": "Total Cost",
+      "format": {
+        "type": "currency",
+        "currency": "USD"
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "bar",
+      "label": "Monthly Costs by Service (USD)"
+    }
+  ],
+  "files": ["script.js"]
+}

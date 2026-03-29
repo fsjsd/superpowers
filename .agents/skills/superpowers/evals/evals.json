@@ -1,0 +1,47 @@
+{
+  "skill_name": "superpowers",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write a superpowers script that scans a folder of images and produces a CSV listing each file's name, size in KB, and dimensions (width × height).",
+      "expected_output": "A working Node.js CommonJS script with a valid descriptor (including output_schema with csv_file), correct --superpowers=describe handling, --folder input arg, progress events, and a csv_file output event emitting an absolute path.",
+      "files": [],
+      "expectations": [
+        "Script uses CommonJS require() not ESM import",
+        "Descriptor output_schema contains { type: 'csv_file' }",
+        "Describe mode uses args.includes('--superpowers=describe') pattern",
+        "Input schema declares a folderpath parameter named 'folder'",
+        "Progress events emitted with { total, finished } payload shape",
+        "csv_file output event emitted with an absolute path to a temp file"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Create a superpowers script that reads a CSV of monthly sales figures (columns: month, revenue, costs) and outputs a line chart of revenue over time and a metric showing total revenue.",
+      "expected_output": "A working Node.js CommonJS script with a descriptor declaring a 'chart' (chartType: line) and a 'metric' output. The chart event payload has correct nameKey/dataKeys fields. The metric event payload includes a value. The --superpowers=describe mode works correctly.",
+      "files": [],
+      "expectations": [
+        "Script uses CommonJS require() not ESM import",
+        "Descriptor output_schema contains a chart entry with chartType: 'line'",
+        "Descriptor output_schema contains a metric entry with format { type: 'currency', currency: 'USD' }",
+        "Chart output event payload has nameKey, dataKeys, and data array",
+        "Metric output event payload has a numeric value field",
+        "Describe mode uses --superpowers=describe handling"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I need a Python superpowers script that takes a folder path and produces a markdown report listing every .py file, its line count, and a summary of imports used.",
+      "expected_output": "A working Python script with correct --superpowers=describe detection using '--superpowers=describe' in sys.argv (not two-arg form), a descriptor with folderpath input and markdown output, progress events, and a markdown output event emitting an absolute path.",
+      "files": [],
+      "expectations": [
+        "Script is Python (not Node.js)",
+        "Describe mode uses single-arg '--superpowers=describe' in sys.argv check (not two-arg form)",
+        "Descriptor output_schema contains { type: 'markdown' }",
+        "Input schema declares a folderpath parameter named 'folder'",
+        "Progress events emitted as newline-delimited JSON with { total, finished } payload",
+        "Markdown output event emitted with absolute path to temp file"
+      ]
+    }
+  ]
+}
