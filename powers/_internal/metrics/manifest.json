@@ -2,7 +2,8 @@
   "name": "Demo - Metrics",
   "description": "Emits one metric for every supported format type: currency (USD/AUD/EUR), date (short/medium/long), percent, and number.",
   "category": "Testing",
-  "requirements": "Node v18+",
+  "color": "#84cc16",
+  "requirements": [],
   "icon": "gauge",
   "input_schema": [],
   "events": [

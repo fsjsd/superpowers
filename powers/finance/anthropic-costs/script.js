@@ -6,7 +6,8 @@ const descriptor = {
   description:
     'Retrieves Anthropic API spending on a daily basis for a configurable number of days.',
   category: 'Financial',
-  requirements: 'Node v18+',
+  color: '#d97706',
+  requirements: [],
   icon: 'bot',
   input_schema: [
     {

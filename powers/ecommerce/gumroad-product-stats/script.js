@@ -8,7 +8,8 @@ const descriptor = {
   name: 'Gumroad Product Stats',
   description: 'Downloads all product data from your Gumroad account and shows a revenue chart.',
   category: 'eCommerce',
-  requirements: 'Node v18+',
+  color: '#ec4899',
+  requirements: [],
   icon: 'shopping-bag',
   input_schema: [
     {
@@ -172,7 +173,7 @@ async function main() {
       },
       {
         event: 'output',
-        payload: { path: csvPath, type: 'csv_file', label: 'Products CSV' },
+        payload: { path: csvPath, type: 'csv_file' },
       },
       {
         event: 'output',

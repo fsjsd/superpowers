@@ -5,7 +5,8 @@ const descriptor = {
   name: 'OpenAI Daily Costs',
   description: 'Retrieves OpenAI spending on a daily basis for the last 7 days.',
   category: 'Financial',
-  requirements: 'Node v18+',
+  color: '#22c55e',
+  requirements: [],
   icon: 'dollar-sign',
   input_schema: [
     {

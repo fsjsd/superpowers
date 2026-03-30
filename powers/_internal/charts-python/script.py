@@ -5,8 +5,9 @@ import random
 descriptor = {
     "name": "Demo - Charts (Python)",
     "description": "Returns randomised dummy data for all supported chart types.",
+    "color": "#3b82f6",
     "category": "Testing",
-    "requirements": "Python 3.8+",
+    "requirements": [],
     "icon": "chart-bar",
     "input_schema": [
         {

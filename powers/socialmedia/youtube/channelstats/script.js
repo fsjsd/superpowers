@@ -5,7 +5,8 @@ const descriptor = {
   name: 'YouTube Channel Stats',
   description: 'Retrieves subscriber count, total views, and video count for a YouTube channel.',
   category: 'Social Media',
-  requirements: 'Node v18+, YouTube Data API v3 key',
+  color: '#dc2626',
+  requirements: [],
   icon: 'youtube',
   input_schema: [
     {

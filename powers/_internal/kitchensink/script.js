@@ -8,7 +8,8 @@ const descriptor = {
   description:
     'Emits dummy data for every supported output type: csv_file, media, html, markdown, metric, and all four chart types.',
   category: 'Testing',
-  requirements: 'Node v18+',
+  color: '#6366f1',
+  requirements: [],
   icon: 'flask-conical',
   input_schema: [],
   events: [

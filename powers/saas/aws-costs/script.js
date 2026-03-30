@@ -13,7 +13,8 @@ const descriptor = {
   description:
     'Retrieves a breakdown of monthly AWS costs stacked by service. Requires AWS API credentials with permission to access Cost Explorer. (IAM policy with AWSBillingReadOnlyAccess / ce:GetCostAndUsage permission)',
   category: 'SaaS',
-  requirements: 'Node v18+',
+  color: '#f59e0b',
+  requirements: [],
   icon: 'cloud',
   input_schema: [
     {

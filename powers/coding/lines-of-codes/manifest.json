@@ -2,7 +2,14 @@
   "name": "Lines of Code",
   "description": "Counts lines of code per language in a folder using cloc and exports results as a CSV.",
   "category": "Code",
-  "requirements": "Node v18+, cloc installed (brew install cloc / apt install cloc)",
+  "color": "#8b5cf6",
+  "requirements": [
+    {
+      "name": "cloc",
+      "mac_cmd": "brew install cloc",
+      "win_cmd": "winget install cloc"
+    }
+  ],
   "icon": "file-code",
   "input_schema": [
     {

@@ -4,7 +4,8 @@ const descriptor = {
   name: 'Demo - Charts (Javascript)',
   description: 'Returns randomised dummy data for all supported chart types.',
   category: 'Testing',
-  requirements: 'Node v18+',
+  color: '#06b6d4',
+  requirements: [],
   icon: 'chart-bar',
   input_schema: [
     {
