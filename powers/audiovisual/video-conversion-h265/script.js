@@ -24,7 +24,10 @@ const descriptor = {
   description:
     'Batch convert video files to H.265/HEVC using FFmpeg with configurable quality and encoding settings.',
   category: 'Media',
-  requirements: 'Node v18+, ffmpeg and ffprobe installed (brew install ffmpeg)',
+  color: '#ef4444',
+  requirements: [
+    { name: 'FFmpeg', mac_cmd: 'brew install ffmpeg', win_cmd: 'winget install ffmpeg' },
+  ],
   author: 'superpowers',
   icon: 'video',
   input_schema: [

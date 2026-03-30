@@ -7,7 +7,8 @@ const descriptor = {
   description:
     'Recursively lists all subfolders in a given folder and exports the results as a CSV.',
   category: 'Utilities',
-  requirements: 'Node v18+',
+  color: '#0ea5e9',
+  requirements: [],
   icon: 'folder-tree',
   input_schema: [
     {

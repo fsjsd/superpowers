@@ -25,7 +25,10 @@ const descriptor = {
   description:
     'Batch convert audio files to MP3 using FFmpeg with configurable bitrate, mode and encoding settings.',
   category: 'Media',
-  requirements: 'Node v18+, ffmpeg and ffprobe installed (brew install ffmpeg)',
+  color: '#f97316',
+  requirements: [
+    { name: 'FFmpeg', mac_cmd: 'brew install ffmpeg', win_cmd: 'winget install ffmpeg' },
+  ],
   author: 'superpowers',
   icon: 'music',
   input_schema: [

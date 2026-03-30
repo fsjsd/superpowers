@@ -7,7 +7,8 @@ const descriptor = {
   name: 'Demo - CSV data',
   description: 'Returns dummy csv_file data covering every supported data type for testing.',
   category: 'Testing',
-  requirements: 'Node v18+',
+  color: '#10b981',
+  requirements: [],
   icon: 'table',
   input_schema: [],
   events: [

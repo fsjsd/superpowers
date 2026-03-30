@@ -30,8 +30,15 @@ The app's output renderer is driven by the `output_schema` declaration — it on
 {
   "name": "Human-readable script name",
   "description": "One-sentence description",
+  "color": "#3B82F6",
   "category": "Media | Data | Files | Code | …",
-  "requirements": "Node v18+, ffmpeg installed, …",
+  "requirements": [
+    {
+      "name": "FFmpeg",
+      "mac_cmd": "brew install ffmpeg",
+      "win_cmd": "winget install ffmpeg"
+    }
+  ],
   "author": "optional",
   "icon": "lucide-icon-name",
   "input_schema": [
@@ -69,6 +76,28 @@ The app's output renderer is driven by the `output_schema` declaration — it on
     }
   ]
 }
+```
+
+### `color` field
+
+Optional 6-digit hex string (e.g. `"#3B82F6"`). The app uses this color for the script's icon throughout the UI. It auto-derives a companion color for the opposite brightness mode (light/dark), so you only need to provide one color. Must be a 6-digit hex — 3-digit shorthands and 8-digit hex are rejected.
+
+### `requirements` field
+
+An array of tool dependencies the script needs to run (beyond the runtime itself — do **not** list Node, Python, etc.). Use an empty array `[]` when the script has no external tool dependencies.
+
+Each entry has:
+
+- `name` — human-readable label (e.g. `"FFmpeg"`, `"cloc"`)
+- `mac_cmd` — macOS install command (e.g. `"brew install ffmpeg"`)
+- `win_cmd` — Windows install command (e.g. `"winget install ffmpeg"`)
+
+Common examples:
+
+```json
+{ "name": "FFmpeg", "mac_cmd": "brew install ffmpeg", "win_cmd": "winget install ffmpeg" }
+{ "name": "cloc",   "mac_cmd": "brew install cloc",   "win_cmd": "winget install cloc" }
+{ "name": "ImageMagick", "mac_cmd": "brew install imagemagick", "win_cmd": "winget install imagemagick" }
 ```
 
 ## Event Shapes
@@ -198,8 +227,9 @@ const os = require('os');
 const descriptor = {
   name: 'My Script',
   description: 'Does something useful.',
+  color: '#3B82F6',
   category: 'Files',
-  requirements: 'Node v18+',
+  requirements: [],
   icon: 'file',
   input_schema: [
     { name: 'folder', type: 'folderpath', label: 'Folder', required: true, default: '' },
