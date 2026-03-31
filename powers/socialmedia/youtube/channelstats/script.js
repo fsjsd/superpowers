@@ -162,6 +162,7 @@ async function main() {
           secondary_value: videos,
           secondary_label: 'Videos',
           format: { type: 'number', decimals: 0 },
+          secondary_format: { type: 'number', decimals: 0 },
         },
       },
       // Metric 2 — total views

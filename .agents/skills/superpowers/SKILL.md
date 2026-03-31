@@ -190,7 +190,7 @@ process.stdout.write(
 
 ### Metric `format` Object
 
-Declare a `format` object on any `metric` entry in `output_schema` to control how the app renders the value. Omitting `format` renders the raw number.
+Declare a `format` and optional `secondary_format` object on any `metric` entry in `output_schema` to control how the app renders the value. Omitting `format` renders the raw number.
 
 ```json
 { "type": "metric", "label": "Total Cost",  "format": { "type": "currency", "currency": "USD" } }

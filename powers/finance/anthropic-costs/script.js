@@ -154,6 +154,7 @@ async function main() {
           secondary_value: days,
           secondary_label: 'Days',
           format: { type: 'currency', currency: 'USD' },
+          secondary_format: { type: 'number', decimals: 0 },
         },
       },
       {

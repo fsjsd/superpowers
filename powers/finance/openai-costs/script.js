@@ -105,10 +105,11 @@ async function main() {
         payload: {
           type: 'metric',
           value: totalCost,
-          label: 'Total (last 7 days)',
+          label: `Total`,
           secondary_value: 7,
           secondary_label: 'Days',
           format: { type: 'currency', currency: 'USD' },
+          secondary_format: { type: 'number', decimals: 0 },
         },
       },
       {
@@ -116,7 +117,7 @@ async function main() {
         payload: {
           type: 'chart',
           chartType: 'bar',
-          title: 'OpenAI Daily Costs (USD)',
+          title: `OpenAI Daily Costs (USD)`,
           nameKey: 'date',
           dataKeys: ['cost'],
           data,
