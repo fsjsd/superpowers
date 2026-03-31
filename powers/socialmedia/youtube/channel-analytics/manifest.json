@@ -1,0 +1,59 @@
+{
+  "name": "YouTube Channel Analytics",
+  "description": "Retrieves a daily views line chart for your YouTube channel using the YouTube Analytics API.",
+  "color": "#dc2626",
+  "category": "Social Media",
+  "requirements": [],
+  "icon": "youtube",
+  "input_schema": [
+    {
+      "name": "start_date",
+      "type": "text",
+      "label": "Start Date",
+      "description": "Report start date in YYYY-MM-DD format (e.g. 2025-01-01)",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "end_date",
+      "type": "text",
+      "label": "End Date",
+      "description": "Report end date in YYYY-MM-DD format (e.g. 2025-12-31)",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "YOUTUBE_ANALYTICS_TOKEN",
+      "type": "secret",
+      "label": "OAuth Access Token env var name",
+      "description": "Set Up YouTube Analytics API Access\n\n1. Go to the Google Cloud Console (console.cloud.google.com)\n2. Create or select a project, then enable the \"YouTube Analytics API\"\n3. Go to Credentials → Create Credentials → OAuth 2.0 Client ID (Desktop app)\n4. Use the OAuth 2.0 Playground (oauth2.googleapis.com/tokeninfo) or your preferred OAuth flow to obtain an access token with the scope:\n   https://www.googleapis.com/auth/yt-analytics.readonly\n5. Set the token as an environment variable and enter its name here",
+      "required": true,
+      "default": "YOUTUBE_ANALYTICS_TOKEN"
+    }
+  ],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        {
+          "name": "total",
+          "label": "Total steps",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Steps completed",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "chart",
+      "chartType": "line",
+      "label": "Daily Views"
+    }
+  ],
+  "files": ["script.js"]
+}

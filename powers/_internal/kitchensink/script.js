@@ -160,6 +160,7 @@ output({
   label: 'Total Records',
   secondary_label: 'Total Capacity',
   format: { type: 'number', decimals: 0 },
+  secondary_format: { type: 'number', decimals: 0 },
 });
 
 // ── 6. bar chart ──────────────────────────────────────────────────────────────

@@ -16,7 +16,7 @@
     },
     {
       "name": "YOUTUBE_API_KEY",
-      "type": "env_var",
+      "type": "secret",
       "label": "YouTube API Key env var name",
       "description": "Set Up Google API Access\n\n1. Go to the Google Cloud Console\n2. Create a new project (or select an existing one)\n3. Enable the YouTube Data API v3\n4. Go to Credentials → Create Credentials → API Key\n5. Copy your API key",
       "required": true,
@@ -46,7 +46,5 @@
       "label": "Channel Stats"
     }
   ],
-  "files": [
-    "script.js"
-  ]
+  "files": ["script.js"]
 }

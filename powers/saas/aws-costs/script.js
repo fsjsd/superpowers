@@ -19,7 +19,7 @@ const descriptor = {
   input_schema: [
     {
       name: 'AWS_ACCESS_KEY_ID',
-      type: 'env_var',
+      type: 'secret',
       label: 'AWS Access Key ID env var name',
       description: 'Name of the environment variable holding your AWS Access Key ID.',
       required: true,
@@ -27,7 +27,7 @@ const descriptor = {
     },
     {
       name: 'AWS_SECRET_ACCESS_KEY',
-      type: 'env_var',
+      type: 'secret',
       label: 'AWS Secret Access Key env var name',
       description: 'Name of the environment variable holding your AWS Secret Access Key.',
       required: true,

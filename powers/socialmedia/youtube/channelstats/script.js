@@ -19,7 +19,7 @@ const descriptor = {
     },
     {
       name: 'YOUTUBE_API_KEY',
-      type: 'env_var',
+      type: 'secret',
       label: 'YouTube API Key env var name',
       description: `Set Up Google API Access
 
@@ -162,6 +162,7 @@ async function main() {
           secondary_value: videos,
           secondary_label: 'Videos',
           format: { type: 'number', decimals: 0 },
+          secondary_format: { type: 'number', decimals: 0 },
         },
       },
       // Metric 2 — total views

@@ -66,6 +66,7 @@ metric({
   secondary_value: 987_654.32,
   secondary_label: 'USD Expenses',
   format: { type: 'currency', currency: 'USD' },
+  secondary_format: { type: 'currency', currency: 'USD' },
 });
 
 // ── Currency: AUD ─────────────────────────────────────────────────────────────
@@ -75,6 +76,7 @@ metric({
   secondary_value: 1_800_000,
   secondary_label: 'AUD Budget',
   format: { type: 'currency', currency: 'AUD' },
+  secondary_format: { type: 'currency', currency: 'AUD' },
 });
 
 // ── Currency: EUR ─────────────────────────────────────────────────────────────
@@ -92,6 +94,7 @@ metric({
   secondary_value: new Date('2026-12-31').getTime(),
   secondary_label: 'End Date (short)',
   format: { type: 'date', style: 'short' },
+  secondary_format: { type: 'date', style: 'short' },
 });
 
 // ── Date: medium ──────────────────────────────────────────────────────────────
@@ -101,6 +104,7 @@ metric({
   secondary_value: new Date('2026-12-31').getTime(),
   secondary_label: 'End Date (medium)',
   format: { type: 'date', style: 'medium' },
+  secondary_format: { type: 'date', style: 'medium' },
 });
 
 // ── Date: long ────────────────────────────────────────────────────────────────
@@ -110,6 +114,7 @@ metric({
   secondary_value: new Date('2026-12-31').getTime(),
   secondary_label: 'End Date (long)',
   format: { type: 'date', style: 'long' },
+  secondary_format: { type: 'date', style: 'long' },
 });
 
 // ── Percent: 1 decimal ────────────────────────────────────────────────────────
@@ -120,6 +125,7 @@ metric({
   secondary_value: 0.0318,
   secondary_label: 'Last Month',
   format: { type: 'percent', decimals: 1 },
+  secondary_format: { type: 'percent', decimals: 1 },
 });
 
 // ── Percent: 2 decimals ───────────────────────────────────────────────────────
@@ -129,6 +135,7 @@ metric({
   secondary_value: 0.5,
   secondary_label: 'Industry Avg',
   format: { type: 'percent', decimals: 2 },
+  secondary_format: { type: 'percent', decimals: 2 },
 });
 
 // ── Number: 0 decimals ────────────────────────────────────────────────────────
@@ -138,6 +145,7 @@ metric({
   secondary_value: 39_100,
   secondary_label: 'Last Quarter',
   format: { type: 'number', decimals: 0 },
+  secondary_format: { type: 'number', decimals: 0 },
 });
 
 // ── Number: 2 decimals ────────────────────────────────────────────────────────
@@ -147,4 +155,5 @@ metric({
   secondary_value: 7.92,
   secondary_label: 'Previous Avg',
   format: { type: 'number', decimals: 2 },
+  secondary_format: { type: 'number', decimals: 2 },
 });

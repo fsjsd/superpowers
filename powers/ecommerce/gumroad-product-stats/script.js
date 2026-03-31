@@ -14,7 +14,7 @@ const descriptor = {
   input_schema: [
     {
       name: 'GUMROAD_ACCESS_TOKEN',
-      type: 'env_var',
+      type: 'secret',
       label: 'Gumroad access token env var name',
       description: 'Name of the environment variable holding your Gumroad API access token',
       required: true,
