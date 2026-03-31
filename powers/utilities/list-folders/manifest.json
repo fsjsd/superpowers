@@ -46,7 +46,5 @@
       "label": "Folder listing CSV"
     }
   ],
-  "files": [
-    "script.js"
-  ]
+  "files": ["script.js"]
 }

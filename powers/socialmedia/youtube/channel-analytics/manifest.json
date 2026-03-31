@@ -55,7 +55,5 @@
       "label": "Daily Views"
     }
   ],
-  "files": [
-    "script.js"
-  ]
+  "files": ["script.js"]
 }

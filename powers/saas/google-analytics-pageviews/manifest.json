@@ -29,12 +29,7 @@
       "description": "Date range for pageview data.",
       "required": false,
       "default": "last_7_days",
-      "options": [
-        "last_7_days",
-        "last_14_days",
-        "last_28_days",
-        "last_90_days"
-      ]
+      "options": ["last_7_days", "last_14_days", "last_28_days", "last_90_days"]
     }
   ],
   "events": [
@@ -69,7 +64,5 @@
       "label": "Daily Pageviews"
     }
   ],
-  "files": [
-    "script.js"
-  ]
+  "files": ["script.js"]
 }
