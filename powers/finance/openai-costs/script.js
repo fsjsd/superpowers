@@ -11,7 +11,7 @@ const descriptor = {
   input_schema: [
     {
       name: 'OPENAI_ADMIN_API_KEY',
-      type: 'env_var',
+      type: 'secret',
       label: 'OpenAI API Key env var name',
       description: 'Name of the environment variable holding your OpenAI admin API key',
       required: true,

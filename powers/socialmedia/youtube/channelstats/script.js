@@ -19,7 +19,7 @@ const descriptor = {
     },
     {
       name: 'YOUTUBE_API_KEY',
-      type: 'env_var',
+      type: 'secret',
       label: 'YouTube API Key env var name',
       description: `Set Up Google API Access
 

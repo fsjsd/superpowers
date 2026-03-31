@@ -116,7 +116,7 @@ Exit `0` on success, non-zero on failure (log errors to stderr).
 
 ## Security Requirements
 
-- **No hardcoded secrets, API keys, or credentials.** Use `env_var` input type for anything sensitive.
+- **No hardcoded secrets, API keys, or credentials.** Use `secret` input type for anything sensitive.
 - Do not make network requests to unexpected third-party services without documenting it clearly in the descriptor `description`.
 
 ---

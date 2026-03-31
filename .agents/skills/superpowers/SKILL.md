@@ -44,7 +44,7 @@ The app's output renderer is driven by the `output_schema` declaration — it on
   "input_schema": [
     {
       "name": "param-name",
-      "type": "folderpath | filepath | text | boolean | number | select | env_var",
+      "type": "folderpath | filepath | text | boolean | number | select | secret",
       "label": "Human-readable label",
       "description": "Optional helper text",
       "required": true | false,
@@ -158,15 +158,15 @@ process.stdout.write(
 
 ## Input Type Notes
 
-| Type         | Notes                                                                                                   |
-| ------------ | ------------------------------------------------------------------------------------------------------- |
-| `folderpath` | Path to a directory                                                                                     |
-| `filepath`   | Path to a single file                                                                                   |
-| `text`       | Plain string                                                                                            |
-| `boolean`    | Passed as `--flag=true` / `--flag=false`; parse the string value                                        |
-| `number`     | Numeric string; parse with `parseInt` / `parseFloat`                                                    |
-| `select`     | One of the values in `options`                                                                          |
-| `env_var`    | Name of an environment variable; script should read the value itself with `process.env` or `os.environ` |
+| Type         | Notes                                                                                                                              |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `folderpath` | Path to a directory                                                                                                                |
+| `filepath`   | Path to a single file                                                                                                              |
+| `text`       | Plain string                                                                                                                       |
+| `boolean`    | Passed as `--flag=true` / `--flag=false`; parse the string value                                                                   |
+| `number`     | Numeric string; parse with `parseInt` / `parseFloat`                                                                               |
+| `select`     | One of the values in `options`                                                                                                     |
+| `secret`     | Name of a sensitive value injected as environment variable; script should read the value itself with `process.env` or `os.environ` |
 
 ## Output Type Notes
 

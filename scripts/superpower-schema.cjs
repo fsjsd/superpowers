@@ -2280,16 +2280,14 @@ class M extends _ {
           );
         return { status: t.value, value: o };
       } else
-        return this._def.schema
-          ._parseAsync({ data: r.data, path: r.path, parent: r })
-          .then((i) =>
-            D(i)
-              ? Promise.resolve(a.transform(i.value, n)).then((o) => ({
-                  status: t.value,
-                  value: o,
-                }))
-              : m,
-          );
+        return this._def.schema._parseAsync({ data: r.data, path: r.path, parent: r }).then((i) =>
+          D(i)
+            ? Promise.resolve(a.transform(i.value, n)).then((o) => ({
+                status: t.value,
+                value: o,
+              }))
+            : m,
+        );
     g.assertNever(a);
   }
 }
@@ -2493,7 +2491,7 @@ const ft = Q.create,
 K.create;
 A.create;
 V.create;
-const je = L(['folderpath', 'filepath', 'text', 'boolean', 'number', 'select', 'env_var']),
+const je = L(['folderpath', 'filepath', 'text', 'boolean', 'number', 'select', 'secret']),
   Ie = w({
     name: x(),
     type: je,

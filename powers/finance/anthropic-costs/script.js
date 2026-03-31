@@ -12,7 +12,7 @@ const descriptor = {
   input_schema: [
     {
       name: 'ANTHROPIC_ADMIN_API_KEY',
-      type: 'env_var',
+      type: 'secret',
       label: 'Anthropic Admin API key env var name',
       description: `Anthropic Admin API key is required to access cost report endpoints. 
 

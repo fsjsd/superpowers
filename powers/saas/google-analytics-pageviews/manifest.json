@@ -1,0 +1,75 @@
+{
+  "name": "Google Analytics Pageviews",
+  "description": "Retrieves daily pageviews for a GA4 property and displays them as a line chart.",
+  "category": "SaaS",
+  "color": "#E37400",
+  "requirements": [],
+  "icon": "chart-line",
+  "input_schema": [
+    {
+      "name": "GOOGLE_SERVICE_ACCOUNT_JSON",
+      "type": "secret",
+      "label": "Service Account JSON",
+      "description": "Secret containing your Google Service Account JSON (as a string, not a file path). The account must have Google Analytics Data API access.\n\nCreate a service account at https://console.cloud.google.com/iam-admin/serviceaccounts, download the JSON key, and paste its contents into the secret. You will also need to grant the service account access to your GA4 property.\n\nEnable the Google Analytics Data API for your project at https://console.cloud.google.com/apis/library/analyticsdata.googleapis.com.",
+      "required": true,
+      "default": "GOOGLE_SERVICE_ACCOUNT_JSON"
+    },
+    {
+      "name": "property-id",
+      "type": "text",
+      "label": "GA4 Property ID",
+      "description": "Your Google Analytics 4 property ID (numeric only, e.g. 123456789). Find it under Admin → Property Settings.",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "time-range",
+      "type": "select",
+      "label": "Time Range",
+      "description": "Date range for pageview data.",
+      "required": false,
+      "default": "last_7_days",
+      "options": [
+        "last_7_days",
+        "last_14_days",
+        "last_28_days",
+        "last_90_days"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        {
+          "name": "total",
+          "label": "Total steps",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Steps completed",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "metric",
+      "label": "Total Pageviews",
+      "format": {
+        "type": "number",
+        "decimals": 0
+      }
+    },
+    {
+      "type": "chart",
+      "chartType": "line",
+      "label": "Daily Pageviews"
+    }
+  ],
+  "files": [
+    "script.js"
+  ]
+}
