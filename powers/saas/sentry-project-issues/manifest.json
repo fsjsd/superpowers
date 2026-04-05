@@ -1,0 +1,74 @@
+{
+  "name": "Sentry Project Issues",
+  "description": "Fetches issues from a Sentry project and returns them as a table.",
+  "color": "#362d59",
+  "category": "SaaS",
+  "requirements": [],
+  "icon": "bug",
+  "input_schema": [
+    {
+      "name": "SENTRY_AUTH_TOKEN",
+      "type": "secret",
+      "label": "Auth Token env var name",
+      "description": "Name of the environment variable holding your Sentry Auth Token.",
+      "required": true,
+      "default": "SENTRY_AUTH_TOKEN"
+    },
+    {
+      "name": "organization-slug",
+      "type": "text",
+      "label": "Organization Slug",
+      "description": "Your Sentry organization slug (found in the Sentry URL).",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "project-slug",
+      "type": "text",
+      "label": "Project Slug",
+      "description": "Your Sentry project slug (found in the Sentry URL).",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "query",
+      "type": "text",
+      "label": "Issue Query",
+      "description": "Sentry search query to filter issues (e.g. is:unresolved).",
+      "required": false,
+      "default": "is:unresolved"
+    },
+    {
+      "name": "limit",
+      "type": "number",
+      "label": "Max Issues",
+      "description": "Maximum number of issues to fetch (up to 500).",
+      "required": false,
+      "default": "100"
+    }
+  ],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        {
+          "name": "total",
+          "label": "Total issues",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Issues fetched",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "data_table",
+      "label": "Sentry Issues"
+    }
+  ],
+  "files": ["script.js"]
+}
