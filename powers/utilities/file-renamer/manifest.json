@@ -1,0 +1,60 @@
+{
+  "name": "File Renamer",
+  "description": "Removes text (or regex matches) from filenames in a folder. Supports dry-run preview and collision-safe renaming.",
+  "category": "Utilities",
+  "color": "#f59e0b",
+  "requirements": [],
+  "icon": "file-pen",
+  "input_schema": [
+    {
+      "name": "folder",
+      "type": "folderpath",
+      "label": "Source Folder",
+      "description": "The folder whose files will be renamed",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "recursive",
+      "type": "boolean",
+      "label": "Recursive",
+      "description": "Process files inside sub-folders as well",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "text-to-remove",
+      "type": "text",
+      "label": "Text to Remove",
+      "description": "The text (or regex pattern) to strip from each filename",
+      "required": true,
+      "default": ""
+    },
+    {
+      "name": "regex-mode",
+      "type": "boolean",
+      "label": "Regex Mode",
+      "description": "Treat \"Text to Remove\" as a regular expression",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "dry-run",
+      "type": "boolean",
+      "label": "Dry Run",
+      "description": "Preview changes without renaming files",
+      "required": false,
+      "default": "true"
+    }
+  ],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        { "name": "total", "label": "Total files", "type": "number" },
+        { "name": "finished", "label": "Files processed", "type": "number" }
+      ]
+    }
+  ],
+  "output_schema": [{ "type": "csv_file", "label": "Rename Results CSV" }]
+}
