@@ -17,7 +17,7 @@
   ],
   "output_schema": [
     {
-      "type": "csv_file",
+      "type": "data_table",
       "label": "Sent Emails Log"
     },
     {
@@ -25,7 +25,5 @@
       "label": "Emails Retrieved"
     }
   ],
-  "files": [
-    "script.js"
-  ]
+  "files": ["script.js"]
 }

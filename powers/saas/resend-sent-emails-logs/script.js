@@ -22,7 +22,7 @@ const descriptor = {
     },
   ],
   output_schema: [
-    { type: 'csv_file', label: 'Sent Emails Log' },
+    { type: 'data_table', label: 'Sent Emails Log' },
     { type: 'metric', label: 'Emails Retrieved' },
   ],
 };
@@ -116,7 +116,7 @@ async function main() {
 
   process.stdout.write(
     JSON.stringify([
-      { event: 'output', payload: { type: 'csv_file', path: outPath } },
+      { event: 'output', payload: { type: 'data_table', path: outPath } },
       { event: 'output', payload: { type: 'metric', value: emails.length } },
     ]) + '\n',
   );

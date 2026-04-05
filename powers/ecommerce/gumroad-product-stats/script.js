@@ -30,7 +30,7 @@ const descriptor = {
     },
   ],
   output_schema: [
-    { type: 'csv_file', label: 'Products CSV' },
+    { type: 'data_table', label: 'Products CSV' },
     { type: 'chart', chartType: 'bar', label: 'Revenue by Product (USD)' },
     { type: 'metric', label: 'Total Products', format: { type: 'number', decimals: 0 } },
     { type: 'metric', label: 'Total Revenue (USD)', format: { type: 'number', decimals: 2 } },
@@ -173,7 +173,7 @@ async function main() {
       },
       {
         event: 'output',
-        payload: { path: csvPath, type: 'csv_file' },
+        payload: { path: csvPath, type: 'data_table' },
       },
       {
         event: 'output',

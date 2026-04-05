@@ -39,7 +39,7 @@ const descriptor = {
   ],
   output_schema: [
     {
-      type: 'csv_file',
+      type: 'data_table',
       label: 'Folder listing CSV',
     },
   ],
@@ -155,6 +155,6 @@ try {
 }
 
 process.stdout.write(
-  JSON.stringify([{ event: 'output', payload: { path: outputPath, type: 'csv_file' } }]) + '\n',
+  JSON.stringify([{ event: 'output', payload: { path: outputPath, type: 'data_table' } }]) + '\n',
 );
 process.exit(0);

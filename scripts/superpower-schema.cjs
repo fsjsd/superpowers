@@ -2510,7 +2510,7 @@ const je = L(['folderpath', 'filepath', 'text', 'boolean', 'number', 'select', '
     w({ type: E('number'), decimals: re().optional() }),
   ]),
   Pe = w({
-    type: L(['csv_file', 'media', 'html', 'markdown', 'chart', 'metric']),
+    type: L(['data_table', 'media', 'html', 'markdown', 'chart', 'metric']),
     label: x(),
     chartType: L(['bar', 'line', 'area', 'pie']).optional(),
     format: ae.optional(),
@@ -2533,7 +2533,7 @@ const je = L(['folderpath', 'filepath', 'text', 'boolean', 'number', 'select', '
     secondary_label: x().optional(),
     secondary_format: ae.optional(),
   }).strict(),
-  Le = w({ type: L(['csv_file', 'media', 'html', 'markdown']), path: x() }).strict(),
+  Le = w({ type: L(['data_table', 'media', 'html', 'markdown']), path: x() }).strict(),
   mt = Re('type', [Me, Ve, Le]),
   ze = w({ name: x(), mac_cmd: x(), win_cmd: x() }).strict(),
   pt = w({

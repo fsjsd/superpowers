@@ -6,7 +6,7 @@ const os = require('os');
 const descriptor = {
   name: 'Demo - All Output Types',
   description:
-    'Emits dummy data for every supported output type: csv_file, media, html, markdown, metric, and all four chart types.',
+    'Emits dummy data for every supported output type: data_table, media, html, markdown, metric, and all four chart types.',
   category: 'Testing',
   color: '#6366f1',
   requirements: [],
@@ -22,7 +22,7 @@ const descriptor = {
     },
   ],
   output_schema: [
-    { type: 'csv_file', label: 'Dummy CSV' },
+    { type: 'data_table', label: 'Dummy CSV' },
     { type: 'media', label: 'Dummy Image' },
     { type: 'html', label: 'Dummy HTML' },
     { type: 'markdown', label: 'Dummy Markdown' },
@@ -68,7 +68,7 @@ function tmpFile(ext) {
 // ── Initial progress ──────────────────────────────────────────────────────────
 progress();
 
-// ── 1. csv_file ───────────────────────────────────────────────────────────────
+// ── 1. data_table ───────────────────────────────────────────────────────────────
 const csvPath = tmpFile('csv');
 const csvLines = [
   'name,age,city,score',
@@ -78,7 +78,7 @@ const csvLines = [
   'Dave,28,Sydney,77',
 ];
 fs.writeFileSync(csvPath, csvLines.join('\n') + '\n');
-output({ type: 'csv_file', path: csvPath });
+output({ type: 'data_table', path: csvPath });
 
 // ── 2. media (SVG image) ──────────────────────────────────────────────────────
 const svgPath = tmpFile('svg');

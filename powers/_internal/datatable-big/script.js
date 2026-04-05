@@ -4,13 +4,22 @@ const path = require('path');
 const os = require('os');
 
 const descriptor = {
-  name: 'Demo - CSV data',
-  description: 'Returns dummy csv_file data covering every supported data type for testing.',
+  name: 'Demo - Data Table (Big)',
+  description: 'Returns dummy data_table data covering every supported data type for testing.',
   category: 'Testing',
   color: '#10b981',
   requirements: [],
   icon: 'table',
-  input_schema: [],
+  input_schema: [
+    {
+      name: 'note',
+      type: 'text',
+      label: 'Note',
+      description: 'Optional note (not used in generation)',
+      required: false,
+      default: '',
+    },
+  ],
   events: [
     {
       type: 'progress',
@@ -20,7 +29,7 @@ const descriptor = {
       ],
     },
   ],
-  output_schema: [{ type: 'csv_file', label: 'Dummy data CSV' }],
+  output_schema: [{ type: 'data_table', label: 'Dummy data CSV' }],
 };
 
 const args = process.argv.slice(2);
@@ -34,93 +43,52 @@ if (args.includes('--superpowers=describe')) {
 //          nullable (some nulls), currency amount, percent, url, email, json_blob,
 //          folder_path (runtime cwd)
 const cwd = process.cwd();
-const rows = [
-  {
-    id: 1,
-    label: 'Alpha',
-    integer_val: 42,
-    float_val: 3.14,
-    boolean_val: true,
-    date_val: '2026-01-15',
-    datetime_val: '2026-01-15T08:30:00Z',
-    nullable_val: 'present',
-    amount_usd: 1250.0,
-    score_pct: 0.87,
-    url: 'https://example.com/alpha',
-    email: 'alpha@example.com',
-    json_blob: '{"key":"value","num":1}',
-    category: 'A',
-    folder_path: cwd,
-  },
-  {
-    id: 2,
-    label: 'Beta',
-    integer_val: -7,
-    float_val: -0.001,
-    boolean_val: false,
-    date_val: '2026-02-20',
-    datetime_val: '2026-02-20T14:00:00Z',
-    nullable_val: '',
-    amount_usd: 340.5,
-    score_pct: 0.42,
-    url: 'https://example.com/beta',
-    email: 'beta@example.com',
-    json_blob: '{"key":"other","num":2}',
-    category: 'B',
-    folder_path: cwd,
-  },
-  {
-    id: 3,
-    label: 'Gamma',
-    integer_val: 0,
-    float_val: 1000000.99,
-    boolean_val: true,
-    date_val: '2026-03-01',
-    datetime_val: '2026-03-01T00:00:00Z',
-    nullable_val: '',
-    amount_usd: 0.0,
-    score_pct: 0.0,
-    url: 'https://example.com/gamma',
-    email: 'gamma@example.com',
-    json_blob: '{}',
-    category: 'A',
-    folder_path: cwd,
-  },
-  {
-    id: 4,
-    label: 'Delta — "quoted", with comma',
-    integer_val: 9999999,
-    float_val: -9999.5,
-    boolean_val: false,
-    date_val: '2026-03-28',
-    datetime_val: '2026-03-28T23:59:59Z',
-    nullable_val: 'present',
-    amount_usd: 87654.32,
-    score_pct: 1.0,
-    url: 'https://example.com/delta?q=1&r=2',
-    email: 'delta+tag@example.com',
-    json_blob: '{"arr":[1,2,3],"nested":{"x":true}}',
-    category: 'C',
-    folder_path: cwd,
-  },
-  {
-    id: 5,
-    label: 'Epsilon',
-    integer_val: 1,
-    float_val: 0.333333,
-    boolean_val: true,
-    date_val: '2026-04-10',
-    datetime_val: '2026-04-10T12:00:00Z',
-    nullable_val: 'present',
-    amount_usd: 5000.0,
-    score_pct: 0.55,
-    url: 'https://example.com/epsilon',
-    email: 'epsilon@example.com',
-    json_blob: '{"flag":false}',
-    category: 'B',
-    folder_path: cwd,
-  },
+const CATEGORIES = ['A', 'B', 'C'];
+const JSON_BLOBS = [
+  '{"key":"value","num":1}',
+  '{"key":"other","num":2}',
+  '{}',
+  '{"arr":[1,2,3],"nested":{"x":true}}',
+  '{"flag":false}',
+  '{"count":42,"active":true}',
+  '{"tags":["alpha","beta"],"score":0.9}',
 ];
+
+function isoDate(dayOffset) {
+  const d = new Date(2026, 0, 1);
+  d.setDate(d.getDate() + dayOffset);
+  return d.toISOString().slice(0, 10);
+}
+
+function isoDatetime(dayOffset, hour) {
+  const d = new Date(2026, 0, 1);
+  d.setDate(d.getDate() + dayOffset);
+  d.setUTCHours(hour, 0, 0, 0);
+  return d.toISOString().replace('.000', '');
+}
+
+const rows = Array.from({ length: 500 }, (_, i) => {
+  const n = i + 1;
+  const label = `Row-${String(n).padStart(3, '0')}`;
+  const slug = label.toLowerCase();
+  return {
+    id: n,
+    label,
+    integer_val: Math.round(Math.sin(n) * 1e7),
+    float_val: parseFloat((Math.cos(n) * 1e6).toFixed(6)),
+    boolean_val: n % 2 === 0,
+    date_val: isoDate(i),
+    datetime_val: isoDatetime(i, n % 24),
+    nullable_val: n % 5 === 0 ? '' : 'present',
+    amount_usd: parseFloat((Math.abs(Math.sin(n * 7)) * 100000).toFixed(2)),
+    score_pct: parseFloat(Math.abs(Math.sin(n * 13)).toFixed(6)),
+    url: `https://example.com/${slug}`,
+    email: `${slug}@example.com`,
+    json_blob: JSON_BLOBS[i % JSON_BLOBS.length],
+    category: CATEGORIES[i % CATEGORIES.length],
+    folder_path: cwd,
+  };
+});
 
 // ── Emit initial progress ─────────────────────────────────────────────────────
 const total = rows.length;
@@ -172,7 +140,7 @@ fs.writeFileSync(outPath, csvLines.join('\n') + '\n');
 
 // ── Output: CSV file ──────────────────────────────────────────────────────────
 process.stdout.write(
-  JSON.stringify([{ event: 'output', payload: { path: outPath, type: 'csv_file' } }]) + '\n',
+  JSON.stringify([{ event: 'output', payload: { path: outPath, type: 'data_table' } }]) + '\n',
 );
 
 process.exit(0);

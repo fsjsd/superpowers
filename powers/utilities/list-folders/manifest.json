@@ -42,7 +42,7 @@
   ],
   "output_schema": [
     {
-      "type": "csv_file",
+      "type": "data_table",
       "label": "Folder listing CSV"
     }
   ],
