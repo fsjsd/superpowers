@@ -85,7 +85,7 @@ The descriptor shape:
       "default": ""
     }
   ],
-  "output_schema": [{ "type": "csv_file | media | html", "label": "Output label" }]
+  "output_schema": [{ "type": "data_table | media | html", "label": "Output label" }]
 }
 ```
 
@@ -104,7 +104,7 @@ console.log(
   JSON.stringify([
     {
       event: 'output',
-      payload: { path: '/abs/path/to/output.csv', type: 'csv_file' },
+      payload: { path: '/abs/path/to/output.csv', type: 'data_table' },
     },
   ]),
 );

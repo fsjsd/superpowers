@@ -11,7 +11,7 @@ Scripts run inside the **Super Powers** Electron app. They must conform to the p
 
 Do not write a script until you have confirmed with the user:
 
-1. **What outputs they want** — list only from: `csv_file`, `media`, `html`, `markdown`, `chart`, `metric`
+1. **What outputs they want** — list only from: `data_table`, `media`, `html`, `markdown`, `chart`, `metric`
 2. **What inputs are required** — only ask if non-obvious
 
 The app's output renderer is driven by the `output_schema` declaration — it only knows how to display types that are declared. Adding undeclared output types silently fails in the UI. Confirming up front ensures you implement exactly what the user asked for and nothing they didn't.
@@ -62,7 +62,7 @@ The app's output renderer is driven by the `output_schema` declaration — it on
     }
   ],
   "output_schema": [
-    { "type": "csv_file | media | html", "label": "Human-readable output label" },
+    { "type": "data_table | media | html", "label": "Human-readable output label" },
     {
       "type": "chart",
       "chartType": "bar | line | area | pie",
@@ -113,7 +113,7 @@ process.stdout.write(
   JSON.stringify([
     {
       event: 'output',
-      payload: { path: '/abs/path/to/output.csv', type: 'csv_file' },
+      payload: { path: '/abs/path/to/output.csv', type: 'data_table' },
     },
   ]) + '\n',
 );
@@ -143,7 +143,7 @@ process.stdout.write(
 );
 ```
 
-`type` must be one of: `csv_file`, `media`, `html`, `chart`, `metric`.
+`type` must be one of: `data_table`, `media`, `html`, `chart`, `metric`.
 
 ### Chart data shapes by type
 
@@ -170,14 +170,14 @@ process.stdout.write(
 
 ## Output Type Notes
 
-| Type       | Notes                                                                                                                     |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `csv_file` | Write CSV with a header row; emit absolute path via `output` event                                                        |
-| `media`    | Write image or video file; emit absolute path via `output` event                                                          |
-| `html`     | Write HTML file; app sanitises with DOMPurify before rendering; emit absolute path via `output` event                     |
-| `markdown` | Write Markdown file; app sanitises with DOMPurify before rendering; emit absolute path via `output` event                 |
-| `metric`   | Fixed number result matching Metric Type                                                                                  |
-| `chart`    | Recharts-compatible chart delivered inline via `output` event; no file path. Must declare `chartType` in `output_schema`. |
+| Type         | Notes                                                                                                                     |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `data_table` | Write CSV with a header row; emit absolute path via `output` event                                                        |
+| `media`      | Write image or video file; emit absolute path via `output` event                                                          |
+| `html`       | Write HTML file; app sanitises with DOMPurify before rendering; emit absolute path via `output` event                     |
+| `markdown`   | Write Markdown file; app sanitises with DOMPurify before rendering; emit absolute path via `output` event                 |
+| `metric`     | Fixed number result matching Metric Type                                                                                  |
+| `chart`      | Recharts-compatible chart delivered inline via `output` event; no file path. Must declare `chartType` in `output_schema`. |
 
 ## Output - Metric Type Notes
 
@@ -297,7 +297,7 @@ const rows = ['Column A,Column B']; // TODO: fill rows
 fs.writeFileSync(outPath, rows.join('\n') + '\n');
 
 process.stdout.write(
-  JSON.stringify([{ event: 'output', payload: { path: outPath, type: 'csv_file' } }]) + '\n',
+  JSON.stringify([{ event: 'output', payload: { path: outPath, type: 'data_table' } }]) + '\n',
 );
 
 // ── Emit bar chart ────────────────────────────────────────────────────────────
@@ -403,7 +403,7 @@ with open(out_path, 'w', newline='') as f:
     writer.writerow(['Column A', 'Column B'])
     # TODO: write rows
 
-print(json.dumps([{"event": "output", "payload": {"path": out_path, "type": "csv_file"}}]), flush=True)
+print(json.dumps([{"event": "output", "payload": {"path": out_path, "type": "data_table"}}]), flush=True)
 
 # ── Emit bar chart ────────────────────────────────────────────────────────────
 print(json.dumps([{

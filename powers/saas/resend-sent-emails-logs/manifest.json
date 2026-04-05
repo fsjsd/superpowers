@@ -1,0 +1,29 @@
+{
+  "name": "Resend Sent Emails Log",
+  "description": "Retrieves a log of the last 30 emails sent from your Resend account.",
+  "category": "SaaS",
+  "color": "#000000",
+  "requirements": [],
+  "icon": "mail",
+  "input_schema": [
+    {
+      "name": "RESEND_API_KEY",
+      "type": "secret",
+      "label": "Resend API Key env var name",
+      "description": "Name of the environment variable holding your Resend API key",
+      "required": true,
+      "default": "RESEND_API_KEY"
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "data_table",
+      "label": "Sent Emails Log"
+    },
+    {
+      "type": "metric",
+      "label": "Emails Retrieved"
+    }
+  ],
+  "files": ["script.js"]
+}

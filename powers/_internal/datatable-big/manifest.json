@@ -1,0 +1,42 @@
+{
+  "name": "Demo - Data Table (Big)",
+  "description": "Returns dummy data_table data covering every supported data type for testing.",
+  "category": "Testing",
+  "color": "#10b981",
+  "requirements": [],
+  "icon": "table",
+  "input_schema": [
+    {
+      "name": "note",
+      "type": "text",
+      "label": "Note",
+      "description": "Optional note (not used in generation)",
+      "required": false,
+      "default": ""
+    }
+  ],
+  "events": [
+    {
+      "type": "progress",
+      "payload_schema": [
+        {
+          "name": "total",
+          "label": "Total rows",
+          "type": "number"
+        },
+        {
+          "name": "finished",
+          "label": "Rows written",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "output_schema": [
+    {
+      "type": "data_table",
+      "label": "Dummy data CSV"
+    }
+  ],
+  "files": ["script.js"]
+}

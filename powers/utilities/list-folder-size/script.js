@@ -30,7 +30,7 @@ const descriptor = {
   ],
   output_schema: [
     {
-      type: 'csv_file',
+      type: 'data_table',
       label: 'Folder sizes CSV',
     },
   ],
@@ -143,7 +143,7 @@ console.log(
   JSON.stringify([
     {
       event: 'output',
-      payload: { path: outputPath, type: 'csv_file' },
+      payload: { path: outputPath, type: 'data_table' },
     },
   ]),
 );

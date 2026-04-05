@@ -4,15 +4,15 @@
     {
       "id": 1,
       "prompt": "Write a superpowers script that scans a folder of images and produces a CSV listing each file's name, size in KB, and dimensions (width × height).",
-      "expected_output": "A working Node.js CommonJS script with a valid descriptor (including output_schema with csv_file), correct --superpowers=describe handling, --folder input arg, progress events, and a csv_file output event emitting an absolute path.",
+      "expected_output": "A working Node.js CommonJS script with a valid descriptor (including output_schema with data_table), correct --superpowers=describe handling, --folder input arg, progress events, and a data_table output event emitting an absolute path.",
       "files": [],
       "expectations": [
         "Script uses CommonJS require() not ESM import",
-        "Descriptor output_schema contains { type: 'csv_file' }",
+        "Descriptor output_schema contains { type: 'data_table' }",
         "Describe mode uses args.includes('--superpowers=describe') pattern",
         "Input schema declares a folderpath parameter named 'folder'",
         "Progress events emitted with { total, finished } payload shape",
-        "csv_file output event emitted with an absolute path to a temp file"
+        "data_table output event emitted with an absolute path to a temp file"
       ]
     },
     {
